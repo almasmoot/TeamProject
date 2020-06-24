@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/newGoal"
+        android:icon="@drawable/ic_icon"
+        android:title="Add New Goal"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/existingGoals"
+        android:title="View Existing Goals"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/progress"
+        android:title="See Your Progress"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/friendProgress"
+        android:title="See Your Friends Progress"
+        app:showAsAction="never">
+    </item>
+</menu>
