@@ -1,3 +1,11 @@
-<resources>
+<resources>s
     <string name="app_name">Team Project</string>
+    <string name="Goal_Name_Edit_Text">Goal Name</string>
+    <string name="Description_Edit_Text">Description</string>
+    <string name="Deadline_Text_View">Deadline</string>
+    <string name="Quantity_Text_View">Quantity</string>
+    <string name="Daily_Radio">Daily</string>
+    <string name="Weekly_Radio">Weekly</string>
+    <string name="One_Time_Radio">One Time</string>
+    <string name="Create_New_Goal_Button">Create New Goal</string>
 </resources>
