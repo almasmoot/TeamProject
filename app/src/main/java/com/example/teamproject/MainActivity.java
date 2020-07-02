@@ -10,20 +10,31 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Set;
 
 import com.example.teamproject.R;
 
 public class MainActivity extends AppCompatActivity {
+    private CheckBox goal1_check, goal2_check, goal3_check;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        addListenerOnButton();
+    }
+
+    // assign the checkboxes values
+    public void addListenerOnButton() {
+        goal1_check = (CheckBox) findViewById(R.id.goal1);
+        goal2_check = (CheckBox) findViewById(R.id.goal2);
+        goal3_check = (CheckBox) findViewById(R.id.goal3);
     }
 
     // Creates the menu
@@ -34,6 +45,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+//    public void populateGoals() {
+//        Set <NewGoals> goals;
+//
+//        if (NewGoals.createNewGoal)
+//            goals.insert(newGoal);
+//
+//        String goalView = newGoal.goalName;
+//    }
 
     // Navigation with the menu
     @Override
