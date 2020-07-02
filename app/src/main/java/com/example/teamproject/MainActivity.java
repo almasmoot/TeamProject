@@ -17,12 +17,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.Set;
 
 import com.example.teamproject.R;
 
 public class MainActivity extends AppCompatActivity {
     private CheckBox goal1_check, goal2_check, goal3_check;
+    Set <NewGoals> goals = new HashSet<NewGoals>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,14 +48,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-//    public void populateGoals() {
-//        Set <NewGoals> goals;
+////    public void manageGoals() {
+////         if (NewGoals.createNewGoal)
+////            goals.add(newGoal);
 //
-//        if (NewGoals.createNewGoal)
-//            goals.insert(newGoal);
-//
-//        String goalView = newGoal.goalName;
-//    }
+//            if (goal1_check.isChecked())
+////
+////
+////    }
 
     // Navigation with the menu
     @Override
