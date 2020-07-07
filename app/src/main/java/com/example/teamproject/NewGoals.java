@@ -34,7 +34,7 @@ public class NewGoals extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_new_goals);
 
         selectDate = findViewById(R.id.btnDate);
         date = findViewById(R.id.tvSelectedDate);

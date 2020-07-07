@@ -67,18 +67,18 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(intent1);
                 return true;
             case R.id.existingGoals:
-                Intent intent2 = new Intent(this, FirstFragment.class);
+                Intent intent2 = new Intent(this, CurrentGoalsScreen.class);
                 this.startActivity(intent2);
                 return true;
             case R.id.progress:
                 Intent intent3 = new Intent(this, ProgressGraph.class);
                 this.startActivity(intent3);
                 return true;
-            case R.id.friendProgress:
+/*            case R.id.friendProgress:
                 Intent intent4 = new Intent(this, SecondFragment.class);
                 this.startActivity(intent4);
                 return true;
-            default:
+*/            default:
                 return super.onOptionsItemSelected(item);
         }
     }
