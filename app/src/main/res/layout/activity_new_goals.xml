@@ -26,7 +26,7 @@
         android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Goal Name"
+        android:text="@string/Goal_Name_Edit_Text"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -39,7 +39,7 @@
         android:layout_marginTop="32dp"
         android:ems="10"
         android:inputType="textPersonName"
-        android:text="Description"
+        android:text="@string/Description_Edit_Text"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/editTextTextPersonName3" />
@@ -49,7 +49,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:text="Deadline"
+        android:text="@string/Deadline_Text_View"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toStartOf="@+id/btnDate"
         app:layout_constraintHorizontal_bias="0.5"
@@ -69,7 +69,7 @@
             android:id="@+id/radioDaily"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Daily"
+            android:text="@string/Daily_Radio"
             tools:layout_editor_absoluteX="84dp"
             tools:layout_editor_absoluteY="186dp" />
 
@@ -77,7 +77,7 @@
             android:id="@+id/radioWeekly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Weekly"
+            android:text="@string/Quantity_Text_View"
             tools:layout_editor_absoluteX="85dp"
             tools:layout_editor_absoluteY="230dp" />
 
@@ -85,7 +85,7 @@
             android:id="@+id/radioOneTime"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="One Time"
+            android:text="@string/One_Time_Radio"
             tools:layout_editor_absoluteX="93dp"
             tools:layout_editor_absoluteY="280dp" />
     </RadioGroup>
@@ -97,7 +97,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="32dp"
-        android:text="Quantity"
+        android:text="@string/Quantity_Text_View"
         android:textAppearance="@style/TextAppearance.AppCompat.Large"
         app:layout_constraintEnd_toStartOf="@+id/editTextNumber"
         app:layout_constraintHorizontal_bias="0.5"
@@ -124,7 +124,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
-        android:text="Create New Goal"
+        android:text="@string/Create_New_Goal_Button"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

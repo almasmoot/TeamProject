@@ -1,4 +1,17 @@
-<resources>
+<resources>s
     <string name="app_name">Team Project</string>
-    <string name="noCurrentGoals">TextView</string>
+    <string name="Goal_Name_Edit_Text">Goal Name</string>
+    <string name="Description_Edit_Text">Description</string>
+    <string name="Deadline_Text_View">Deadline</string>
+    <string name="Quantity_Text_View">Quantity</string>
+    <string name="Daily_Radio">Daily</string>
+    <string name="Weekly_Radio">Weekly</string>
+    <string name="One_Time_Radio">One Time</string>
+    <string name="Create_New_Goal_Button">Create New Goal</string>
+    <string name="goal1_desc">Goal Desc.</string>
+    <string name="goal2_desc">Goal Desc.</string>
+    <string name="goal_1">Goal 1</string>
+    <string name="goal_2">Goal 2</string>
+    <string name="goal_3">Goal 3</string>
+    <string name="goal3_desc">Goal Desc.</string>
 </resources>
