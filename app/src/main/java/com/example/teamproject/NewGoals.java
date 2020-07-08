@@ -3,26 +3,35 @@ package com.example.teamproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NewGoals extends AppCompatActivity {
 
-    Button selectDate;
-    TextView date;
-    DatePickerDialog datePickerDialog;
-    int year;
-    int month;
-    int dayOfMonth;
-    Calendar calendar;
+
+    private Button selectDate;
+    private TextView date;
+    private DatePickerDialog datePickerDialog;
+    private int year;
+    private int month;
+    private int dayOfMonth;
+    private Calendar calendar;
+    public static final String EXTRA_MESSAGE = "com.example.teamproject.MESSAGE";
+    public static final String TAG = "NewGoals";
+    private int frequency = 0; //0 for once, 1 for weekly, 2 for Daily
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -34,7 +43,7 @@ public class NewGoals extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        setContentView(R.layout.activity_new_goals);
 
         selectDate = findViewById(R.id.btnDate);
         date = findViewById(R.id.tvSelectedDate);
@@ -51,6 +60,7 @@ public class NewGoals extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                 date.setText(day + "/" + (month + 1) + "/" + year);
+                                calendar.set(year,month+1,day);
                             }
                         }, year, month, dayOfMonth);
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -67,16 +77,59 @@ public class NewGoals extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.radioDaily:
                 if (checked)
-
+                    frequency = 2;
                     break;
             case R.id.radioWeekly:
                 if (checked)
-
+                    frequency = 1;
                     break;
             case R.id.radioOneTime:
                 if (checked)
-
+                    frequency = 0;
                     break;
         }
+    }
+
+    public void createGoal(View view)
+    {
+        EditText editText = (EditText) findViewById(R.id.editTextTextPersonName3);
+        String name = editText.getText().toString();
+        EditText editText1 = (EditText) findViewById(R.id.editTextTextPersonName4);
+        String description = editText1.getText().toString();
+        EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
+        int quantity = Integer.parseInt(editText2.getText().toString());
+        Goal createdGoal = new Goal(name,description,quantity);
+        Map<Calendar,Goal> goals = new HashMap<Calendar, Goal>();
+        long today = Calendar.getInstance().getTimeInMillis();
+        long deadline = calendar.getTimeInMillis();
+        switch(frequency)
+        {
+            case 0: // one time
+                goals.put(calendar,createdGoal);
+                break;
+            case 1: // weekly recurrence
+                while(deadline > today)
+                {
+                    Goal goalIn = new Goal(createdGoal);
+                    Calendar date = Calendar.getInstance();
+                    date.setTimeInMillis(deadline);
+                    goals.put(date,goalIn);
+                    deadline = deadline - 604800000;
+                }
+                break;
+            case 2: // daily recurrence
+                while(deadline > today)
+                {
+                    Goal goalIn = new Goal(createdGoal);
+                    Calendar date = Calendar.getInstance();
+                    date.setTimeInMillis(deadline);
+                    goals.put(date,goalIn);
+                    deadline = deadline - 86400000;
+                }
+                break;
+            default:
+        }
+        Intent intent = new Intent(this,MainActivity.class);
+
     }
 }

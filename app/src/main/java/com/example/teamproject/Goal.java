@@ -6,18 +6,22 @@ public class Goal {
     private String goalName;
     private String description;
     private int quantity;
-    private Date day;
+    private int accomplished;
 
-    public Goal(String name, String description, int quantity, Date day)
+    public Goal(Goal goal)
+    {
+        goalName = goal.getGoalName();
+        description = goal.getDescription();
+        quantity = goal.getQuantity();
+        accomplished = 0;
+    }
+
+    public Goal(String name, String description, int quantity)
     {
         goalName = name;
         this.description = description;
         this.quantity = quantity;
-        this.day=day;
-    }
-
-    public Date getDay() {
-        return day;
+        accomplished = 0;
     }
 
     public int getQuantity() {
@@ -32,10 +36,6 @@ public class Goal {
         return goalName;
     }
 
-    public void setDay(Date day) {
-        this.day = day;
-    }
-
     public void setDescription(String description) {
         this.description = description;
     }
@@ -48,6 +48,9 @@ public class Goal {
         this.quantity = quantity;
     }
 
+    public void setAccomplished(int quant){accomplished = quant;}
+
+    public Boolean goalAchieved(){return (accomplished >= quantity);}
     @Override
     public String toString() {
         return description;
