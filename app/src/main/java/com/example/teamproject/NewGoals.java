@@ -3,26 +3,38 @@ package com.example.teamproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
+import java.util.HashMap;
+import java.util.Map;
 
 public class NewGoals extends AppCompatActivity {
 
-    Button selectDate;
-    TextView date;
-    DatePickerDialog datePickerDialog;
-    int year;
-    int month;
-    int dayOfMonth;
-    Calendar calendar;
+
+    private Button selectDate;
+    private TextView date;
+    private DatePickerDialog datePickerDialog;
+    private int year;
+    private int month;
+    private int dayOfMonth;
+    private Calendar calendar;
+    public static final String EXTRA_MESSAGE = "com.example.teamproject.MESSAGE";
+    public static final String TAG = "NewGoals";
+    private int frequency = 0; //0 for once, 1 for weekly, 2 for Daily
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -51,6 +63,7 @@ public class NewGoals extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                 date.setText(day + "/" + (month + 1) + "/" + year);
+                                calendar.set(year,month+1,day);
                             }
                         }, year, month, dayOfMonth);
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -67,16 +80,63 @@ public class NewGoals extends AppCompatActivity {
         switch(view.getId()) {
             case R.id.radioDaily:
                 if (checked)
-
+                    frequency = 2;
                     break;
             case R.id.radioWeekly:
                 if (checked)
-
+                    frequency = 1;
                     break;
             case R.id.radioOneTime:
                 if (checked)
-
+                    frequency = 0;
                     break;
         }
+    }
+
+    public void createGoal(View view)
+    {
+        EditText editText = (EditText) findViewById(R.id.editTextTextPersonName3);
+        String name = editText.getText().toString();
+        EditText editText1 = (EditText) findViewById(R.id.editTextTextPersonName4);
+        String description = editText1.getText().toString();
+        EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
+        int quantity = Integer.parseInt(editText2.getText().toString());
+        Goal createdGoal = new Goal(name,description,quantity);
+        Map<Calendar,Goal> goals = new HashMap<Calendar, Goal>();
+        long today = Calendar.getInstance().getTimeInMillis();
+        long deadline = calendar.getTimeInMillis();
+        switch(frequency)
+        {
+            case 0: // one time
+                goals.put(calendar,createdGoal);
+                break;
+            case 1: // weekly recurrence
+                while(deadline > today)
+                {
+                    Goal goalIn = new Goal(createdGoal);
+                    Calendar date = Calendar.getInstance();
+                    date.setTimeInMillis(deadline);
+                    goals.put(date,goalIn);
+                    deadline = deadline - 604800000;
+                }
+                break;
+            case 2: // daily recurrence
+                while(deadline > today)
+                {
+                    Goal goalIn = new Goal(createdGoal);
+                    Calendar date = Calendar.getInstance();
+                    date.setTimeInMillis(deadline);
+                    goals.put(date,goalIn);
+                    deadline = deadline - 86400000;
+                }
+                break;
+            default:
+        }
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
+
+        myRef.setValue(goals);
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }
