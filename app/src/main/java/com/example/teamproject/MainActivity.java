@@ -16,21 +16,28 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Set;
 
 import com.example.teamproject.R;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 public class MainActivity extends AppCompatActivity {
     private CheckBox goal1_check, goal2_check, goal3_check;
-    Set <NewGoals> goals = new HashSet<NewGoals>();
-
+    ArrayList<String> numberList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addListenerOnButton();
+        get_json();
     }
 
     // assign the checkboxes values
@@ -48,14 +55,41 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-////    public void manageGoals() {
-////         if (NewGoals.createNewGoal)
-////            goals.add(newGoal);
-//
-//            if (goal1_check.isChecked())
-////
-////
-////    }
+    public void get_json() {
+        String json;
+        boolean daily = false;
+        boolean weekly = false;
+        boolean oneTime = false;
+        try {
+            InputStream is = getAssets().open("file_that_has_goals?");
+            int size = is.available();
+            byte[] buffer = new byte[size];
+            is.read(buffer);
+            is.close();
+
+            json = new String(buffer, "UTF-8");
+            JSONArray jsonArray = new JSONArray(json);
+
+            for(int i = 0; i <jsonArray.length(); i++) {
+                JSONObject obj = jsonArray.getJSONObject(i);
+                if (obj.getString("frequency").equals("daily")) {
+                    daily = true;
+                }
+                if (obj.getString("frequency").equals("weekly")) {
+                    weekly = true;
+                }
+                if (obj.getString("frequency").equals("oneTime")) {
+                    oneTime = true;
+                }
+                String quantity = obj.getString("quantity");
+                String description = obj.getString("description");
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }catch(JSONException e) {
+            e.printStackTrace();
+        }
+    }
 
     // Navigation with the menu
     @Override
