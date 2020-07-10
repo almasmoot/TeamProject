@@ -14,6 +14,9 @@ import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
@@ -129,7 +132,11 @@ public class NewGoals extends AppCompatActivity {
                 break;
             default:
         }
-        Intent intent = new Intent(this,MainActivity.class);
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("message");
 
+        myRef.setValue(goals);
+        Intent intent = new Intent(this,MainActivity.class);
+        startActivity(intent);
     }
 }
