@@ -133,7 +133,7 @@ public class NewGoals extends AppCompatActivity {
             default:
         }
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
+        DatabaseReference myRef = database.getReference("goals");
 
         myRef.setValue(goals);
         Intent intent = new Intent(this,MainActivity.class);
