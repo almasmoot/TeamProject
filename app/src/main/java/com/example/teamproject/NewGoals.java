@@ -17,8 +17,10 @@ import android.widget.TextView;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NewGoals extends AppCompatActivity {
@@ -101,22 +103,21 @@ public class NewGoals extends AppCompatActivity {
         String description = editText1.getText().toString();
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
         int quantity = Integer.parseInt(editText2.getText().toString());
-        Goal createdGoal = new Goal(name,description,quantity);
-        Map<Calendar,Goal> goals = new HashMap<Calendar, Goal>();
+        Goal createdGoal = new Goal(name,description,quantity,calendar);
+        List<Goal> goals = new ArrayList<Goal>();
         long today = Calendar.getInstance().getTimeInMillis();
         long deadline = calendar.getTimeInMillis();
         switch(frequency)
         {
             case 0: // one time
-                goals.put(calendar,createdGoal);
+                goals.add(createdGoal);
                 break;
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
                     Goal goalIn = new Goal(createdGoal);
-                    Calendar date = Calendar.getInstance();
-                    date.setTimeInMillis(deadline);
-                    goals.put(date,goalIn);
+                    goalIn.setDate(deadline);
+                    goals.add(goalIn);
                     deadline = deadline - 604800000;
                 }
                 break;
@@ -124,9 +125,8 @@ public class NewGoals extends AppCompatActivity {
                 while(deadline > today)
                 {
                     Goal goalIn = new Goal(createdGoal);
-                    Calendar date = Calendar.getInstance();
-                    date.setTimeInMillis(deadline);
-                    goals.put(date,goalIn);
+                    goalIn.setDate(deadline);
+                    goals.add(goalIn);
                     deadline = deadline - 86400000;
                 }
                 break;
