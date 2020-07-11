@@ -97,6 +97,8 @@ public class NewGoals extends AppCompatActivity {
 
     public void createGoal(View view)
     {
+        FirebaseDatabase database = FirebaseDatabase.getInstance();
+        DatabaseReference myRef = database.getReference("goals");
         EditText editText = (EditText) findViewById(R.id.editTextTextPersonName3);
         String name = editText.getText().toString();
         EditText editText1 = (EditText) findViewById(R.id.editTextTextPersonName4);
@@ -110,14 +112,14 @@ public class NewGoals extends AppCompatActivity {
         switch(frequency)
         {
             case 0: // one time
-                goals.add(createdGoal);
+                myRef.setValue(createdGoal);
                 break;
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
-                    goals.add(goalIn);
+                    myRef.setValue(createdGoal);
                     deadline = deadline - 604800000;
                 }
                 break;
@@ -126,16 +128,12 @@ public class NewGoals extends AppCompatActivity {
                 {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
-                    goals.add(goalIn);
+                    myRef.setValue(createdGoal);
                     deadline = deadline - 86400000;
                 }
                 break;
             default:
         }
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("goals");
-
-        myRef.setValue(goals);
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
