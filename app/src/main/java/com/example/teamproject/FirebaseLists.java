@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FirebaseLists {
 
-    public List getFirebaseList()
+    public static List getFirebaseList()
     {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
@@ -15,7 +15,7 @@ public class FirebaseLists {
         return goals;
     }
 
-    public void updateFirebaseList(List goals)
+    public static void updateFirebaseList(List goals)
     {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
