@@ -16,21 +16,31 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import com.example.teamproject.R;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
     private CheckBox goal1_check, goal2_check, goal3_check;
-    Set <NewGoals> goals = new HashSet<NewGoals>();
-
+    ArrayList<String> numberList = new ArrayList<>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         addListenerOnButton();
+        get_json();
     }
 
     // assign the checkboxes values
@@ -48,14 +58,61 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-////    public void manageGoals() {
-////         if (NewGoals.createNewGoal)
-////            goals.add(newGoal);
+//    public void get_json() {
+//        String json;
+//        boolean daily = false;
+//        boolean weekly = false;
+//        boolean oneTime = false;
+//        String description = "";
+//        String quantity;
+//        try {
+//            InputStream is = getAssets().open("file_that_has_goals?");
+//            int size = is.available();
+//            byte[] buffer = new byte[size];
+//            is.read(buffer);
+//            is.close();
 //
-//            if (goal1_check.isChecked())
-////
-////
-////    }
+//            json = new String(buffer, "UTF-8");
+//            JSONArray jsonArray = new JSONArray(json);
+//
+//            for(int i = 0; i <jsonArray.length(); i++) {
+//                JSONObject obj = jsonArray.getJSONObject(i);
+//                if (obj.getString("frequency").equals("daily")) {
+//                    daily = true;
+//                }
+//                if (obj.getString("frequency").equals("weekly")) {
+//                    weekly = true;
+//                }
+//                if (obj.getString("frequency").equals("oneTime")) {
+//                    oneTime = true;
+//                }
+//                quantity = obj.getString("quantity");
+//                description = obj.getString("description");
+//            }
+//        }catch (IOException e) {
+//            e.printStackTrace();
+//        }catch(JSONException e) {
+//            e.printStackTrace();
+//        }
+//
+//        setContentView(R.layout.activity_main);
+//        TextView goal1View = (TextView)findViewById(R.id.goal1);
+//        goal1View.setText(description);
+//    }
+    public void getGoals() {
+        boolean daily = false;
+        boolean weekly = false;
+        boolean oneTime = false;
+        String description = "";
+        String quantity;
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
+        description = goals.get("description");
+        setContentView(R.layout.activity_main);
+        TextView goal1View = (TextView)findViewById(R.id.goal1);
+        goal1View.setText(description);
+    }
 
     // Navigation with the menu
     @Override
@@ -74,7 +131,11 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent3 = new Intent(this, ProgressGraph.class);
                 this.startActivity(intent3);
                 return true;
-            default:
+/*            case R.id.friendProgress:
+                Intent intent4 = new Intent(this, SecondFragment.class);
+                this.startActivity(intent4);
+                return true;
+*/            default:
                 return super.onOptionsItemSelected(item);
         }
     }

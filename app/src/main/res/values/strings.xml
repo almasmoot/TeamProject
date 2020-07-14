@@ -14,4 +14,5 @@
     <string name="goal_2">Goal 2</string>
     <string name="goal_3">Goal 3</string>
     <string name="goal3_desc">Goal Desc.</string>
+    <string name="noCurrentGoals">No Current Goals</string>
 </resources>

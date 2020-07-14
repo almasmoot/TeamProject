@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.View;
@@ -13,12 +14,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class NewGoals extends AppCompatActivity {
@@ -95,28 +102,33 @@ public class NewGoals extends AppCompatActivity {
 
     public void createGoal(View view)
     {
+        DatabaseReference mDatabase;
+        mDatabase = FirebaseDatabase.getInstance().getReference();
+        List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
         EditText editText = (EditText) findViewById(R.id.editTextTextPersonName3);
         String name = editText.getText().toString();
         EditText editText1 = (EditText) findViewById(R.id.editTextTextPersonName4);
         String description = editText1.getText().toString();
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
         int quantity = Integer.parseInt(editText2.getText().toString());
-        Goal createdGoal = new Goal(name,description,quantity);
-        Map<Calendar,Goal> goals = new HashMap<Calendar, Goal>();
+        Goal createdGoal = new Goal(name,description,quantity,calendar);
+        if(goals == null)
+        {
+            goals = new ArrayList<Goal>();
+        }
         long today = Calendar.getInstance().getTimeInMillis();
         long deadline = calendar.getTimeInMillis();
         switch(frequency)
         {
             case 0: // one time
-                goals.put(calendar,createdGoal);
+                goals.add(createdGoal);
                 break;
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
                     Goal goalIn = new Goal(createdGoal);
-                    Calendar date = Calendar.getInstance();
-                    date.setTimeInMillis(deadline);
-                    goals.put(date,goalIn);
+                    goalIn.setDate(deadline);
+                    goals.add(goalIn);
                     deadline = deadline - 604800000;
                 }
                 break;
@@ -124,18 +136,17 @@ public class NewGoals extends AppCompatActivity {
                 while(deadline > today)
                 {
                     Goal goalIn = new Goal(createdGoal);
-                    Calendar date = Calendar.getInstance();
-                    date.setTimeInMillis(deadline);
-                    goals.put(date,goalIn);
+                    goalIn.setDate(deadline);
+                    //myRef.setValue(createdGoal);
+                    goals.add(goalIn);
                     deadline = deadline - 86400000;
                 }
                 break;
             default:
         }
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("message");
 
-        myRef.setValue(goals);
+        mDatabase.child("goals").setValue(goals);
+
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
