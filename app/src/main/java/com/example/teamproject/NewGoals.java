@@ -104,9 +104,7 @@ public class NewGoals extends AppCompatActivity {
     {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        mDatabase.child("messages").setValue("Hello, World");
-
-
+        List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
         EditText editText = (EditText) findViewById(R.id.editTextTextPersonName3);
         String name = editText.getText().toString();
         EditText editText1 = (EditText) findViewById(R.id.editTextTextPersonName4);
@@ -114,21 +112,23 @@ public class NewGoals extends AppCompatActivity {
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
         int quantity = Integer.parseInt(editText2.getText().toString());
         Goal createdGoal = new Goal(name,description,quantity,calendar);
-        //List<Goal> goals = new ArrayList<Goal>();
+        if(goals == null)
+        {
+            goals = new ArrayList<Goal>();
+        }
         long today = Calendar.getInstance().getTimeInMillis();
         long deadline = calendar.getTimeInMillis();
         switch(frequency)
         {
             case 0: // one time
-                mDatabase.child("goals").setValue(createdGoal);
+                goals.add(createdGoal);
                 break;
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
-                    //myRef.setValue(createdGoal);
-                    mDatabase.child("goals").setValue(goalIn);
+                    goals.add(goalIn);
                     deadline = deadline - 604800000;
                 }
                 break;
@@ -138,30 +138,15 @@ public class NewGoals extends AppCompatActivity {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     //myRef.setValue(createdGoal);
-                    mDatabase.child("goals").setValue(goalIn);
+                    goals.add(goalIn);
                     deadline = deadline - 86400000;
                 }
                 break;
             default:
         }
-        // Read from the database
-        mDatabase.addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                // This method is called once with the initial value and again
-                // whenever data at this location is updated.
-                String value = dataSnapshot.getValue(String.class);
-                Log.d(TAG, "Value is: " + value);
-            }
 
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
+        mDatabase.child("goals").setValue(goals);
 
-        //Toast toast
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
