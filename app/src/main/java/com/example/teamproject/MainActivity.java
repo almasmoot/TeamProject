@@ -60,6 +60,8 @@ public class MainActivity extends AppCompatActivity {
         boolean daily = false;
         boolean weekly = false;
         boolean oneTime = false;
+        String description = "";
+        String quantity;
         try {
             InputStream is = getAssets().open("file_that_has_goals?");
             int size = is.available();
@@ -81,14 +83,18 @@ public class MainActivity extends AppCompatActivity {
                 if (obj.getString("frequency").equals("oneTime")) {
                     oneTime = true;
                 }
-                String quantity = obj.getString("quantity");
-                String description = obj.getString("description");
+                quantity = obj.getString("quantity");
+                description = obj.getString("description");
             }
         }catch (IOException e) {
             e.printStackTrace();
         }catch(JSONException e) {
             e.printStackTrace();
         }
+
+        setContentView(R.layout.activity_main);
+        TextView goal1View = (TextView)findViewById(R.id.goal1);
+        goal1View.setText(description);
     }
 
     // Navigation with the menu
