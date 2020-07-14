@@ -60,6 +60,16 @@ public class Goal {
     }
 
     public Boolean goalAchieved(){return (accomplished >= quantity);}
+
+    public Boolean laterGoal(Goal goal)
+    {
+        if(this.date.before(goal.getDate()))
+        {
+            return true;
+        }
+        else
+            return false;
+    }
     @Override
     public String toString() {
         return description;
