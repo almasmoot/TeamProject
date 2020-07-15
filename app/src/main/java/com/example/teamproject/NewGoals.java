@@ -128,6 +128,7 @@ public class NewGoals extends AppCompatActivity {
                 {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
+                    mDatabase.child("goals").setValue(goalIn);
                     goals.add(goalIn);
                     deadline = deadline - 604800000;
                 }
@@ -138,6 +139,7 @@ public class NewGoals extends AppCompatActivity {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     //myRef.setValue(createdGoal);
+
                     goals.add(goalIn);
                     deadline = deadline - 86400000;
                 }
@@ -146,6 +148,7 @@ public class NewGoals extends AppCompatActivity {
         }
 
         mDatabase.child("goals").setValue(goals);
+        //send message
 
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
