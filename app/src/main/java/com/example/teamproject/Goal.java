@@ -9,6 +9,14 @@ public class Goal {
     private int accomplished;
     private Calendar date;
 
+    public Goal()
+    {
+        goalName = "";
+        description = "";
+        quantity = 0;
+        accomplished = 0;
+        date = Calendar.getInstance();
+    }
     public Goal(Goal goal)
     {
         goalName = goal.getGoalName();
