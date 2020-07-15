@@ -66,9 +66,9 @@ public class ProgressGraph extends AppCompatActivity {
 
 
     //dropdown menu of goals, pass in firebase database, or list of goals
-    public void getDropdownChoices(){
+   /* public void getDropdownChoices(){
         //set FirebaseList?
-        List<Goal> goal = FirebaseLists.getFirebaseList();
+        List<Goal> goal = FirebaseLists.getBrennansList();
         //sets Spinner to the id
         Spinner spinner = (Spinner) findViewById(R.id.goal_dropdown);
         //Spinner needs to have access to the data so it can be placed in the menu
@@ -76,7 +76,7 @@ public class ProgressGraph extends AppCompatActivity {
                 //goal.getGoalName(), android.R.layout.simple_spinner_item);
         //adapter.setDropDownViewResource((android.R.layout.simple_spinner_dropdown_item));
         //spinner.setAdapter(adapter);
-    }
+    }*/
 
 
     @Override
