@@ -63,7 +63,7 @@ public class Goal {
 
     public Boolean laterGoal(Goal goal)
     {
-        if(this.date.before(goal.getDate()))
+        if(this.date.before(goal.getDate())||this.date.equals(goal.getDate()))
         {
             return true;
         }
@@ -72,6 +72,6 @@ public class Goal {
     }
     @Override
     public String toString() {
-        return description;
+        return goalName + '\n' +description;
     }
 }
