@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -33,8 +34,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
+
     private CheckBox goal1_check, goal2_check, goal3_check;
     ArrayList<String> numberList = new ArrayList<>();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -107,9 +110,12 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
-        //description = goals.get("description");
+        for (Goal goal : goals) {
+
+        }
+        description = goals.get("description");
         setContentView(R.layout.activity_main);
-        TextView goal1View = (TextView)findViewById(R.id.goal1);
+        ListView goal1View = (ListView)findViewById(R.id.goal1);
         goal1View.setText(description);
     }
 

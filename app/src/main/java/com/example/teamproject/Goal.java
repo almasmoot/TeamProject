@@ -76,6 +76,6 @@ public class Goal {
     }
     @Override
     public String toString() {
-        return description;
+        return goalName + '\n' +description;
     }
 }

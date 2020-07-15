@@ -18,7 +18,7 @@ public class FirebaseLists {
         return goals;
     }
 
-    public void updateFirebaseList(List goals)
+    public static void updateFirebaseList(List goals)
     {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
