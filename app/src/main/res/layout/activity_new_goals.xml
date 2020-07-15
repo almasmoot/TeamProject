@@ -76,6 +76,7 @@
             android:id="@+id/radioDaily"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/Daily_Radio"
             tools:layout_editor_absoluteX="84dp"
             tools:layout_editor_absoluteY="186dp" />
