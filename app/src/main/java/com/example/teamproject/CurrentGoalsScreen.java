@@ -3,8 +3,13 @@ package com.example.teamproject;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+import android.widget.ListView;
 
 public class CurrentGoalsScreen extends AppCompatActivity {
+
+    //ListView lv;
+    //initialize list here
+    //GoalList.GoalAdapter goalAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
