@@ -122,6 +122,8 @@ public class NewGoals extends AppCompatActivity {
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
+                    key = new String(mDatabase.child("goals").push().getKey());
+                    mDatabase.child("goals").child(key).setValue(createdGoal);
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     deadline = deadline - 604800000;
@@ -133,7 +135,8 @@ public class NewGoals extends AppCompatActivity {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     //myRef.setValue(createdGoal);
-
+                    key = new String(mDatabase.child("goals").push().getKey());
+                    mDatabase.child("goals").child(key).setValue(createdGoal);
                     deadline = deadline - 86400000;
                 }
                 break;
