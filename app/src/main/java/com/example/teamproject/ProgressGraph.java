@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
 import android.widget.ListAdapter;
 import android.widget.Spinner;
 
@@ -54,6 +55,7 @@ public class ProgressGraph extends AppCompatActivity {
 
         int count = 0;
         for(Goal goalList : goal){
+            //checks to see if the goal names line up, only displays data for that name
             //if(name == goalList.getGoalName()){
             dataVals.add(new Entry( (float) count, (float) goalList.getAccomplished()));
             count++;
@@ -64,17 +66,18 @@ public class ProgressGraph extends AppCompatActivity {
 
 
     //dropdown menu of goals, pass in firebase database, or list of goals
-   /* public void dropDownGoals(){
+    public void getDropdownChoices(){
+        //set FirebaseList?
+        List<Goal> goal = FirebaseLists.getFirebaseList();
+        //sets Spinner to the id
         Spinner spinner = (Spinner) findViewById(R.id.goal_dropdown);
-// Create an ArrayAdapter using the string array and a default spinner layout
+        //Spinner needs to have access to the data so it can be placed in the menu
         //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
-                //R.array.planets_array, android.R.layout.simple_spinner_item);
-        ListAdapter adapter = ListAdapter.createFromResource(this, , android.R.layout.simple_spinner_item);
-// Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-// Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
-    }*/
+                //goal.getGoalName(), android.R.layout.simple_spinner_item);
+        //adapter.setDropDownViewResource((android.R.layout.simple_spinner_dropdown_item));
+        //spinner.setAdapter(adapter);
+    }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

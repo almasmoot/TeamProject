@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String value=snapshot.getValue(NewGoals.description).toString();
+                String value=snapshot.getValue(Goal.class).toString();
                 arrayList.add(value);
                 arrayAdapter.notifyDataSetChanged();
             }
