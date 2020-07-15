@@ -104,7 +104,6 @@ public class NewGoals extends AppCompatActivity {
     {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
-        List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
         EditText editText = (EditText) findViewById(R.id.editTextTextPersonName3);
         String name = editText.getText().toString();
         EditText editText1 = (EditText) findViewById(R.id.editTextTextPersonName4);
@@ -112,23 +111,19 @@ public class NewGoals extends AppCompatActivity {
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
         int quantity = Integer.parseInt(editText2.getText().toString());
         Goal createdGoal = new Goal(name,description,quantity,calendar);
-        if(goals == null)
-        {
-            goals = new ArrayList<Goal>();
-        }
         long today = Calendar.getInstance().getTimeInMillis();
         long deadline = calendar.getTimeInMillis();
         switch(frequency)
         {
             case 0: // one time
-                goals.add(createdGoal);
+               String key = mDatabase.child("goals").push().getKey();
+               mDatabase.child("goals").child(key).setValue(createdGoal);
                 break;
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
-                    goals.add(goalIn);
                     deadline = deadline - 604800000;
                 }
                 break;
@@ -138,14 +133,12 @@ public class NewGoals extends AppCompatActivity {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     //myRef.setValue(createdGoal);
-                    goals.add(goalIn);
+
                     deadline = deadline - 86400000;
                 }
                 break;
             default:
         }
-
-        mDatabase.child("goals").setValue(goals);
 
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
