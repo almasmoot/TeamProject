@@ -7,7 +7,7 @@ import java.util.List;
 
 public class FirebaseLists {
 
-    public List getFirebaseList()
+    public static List getFirebaseList()
     {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
