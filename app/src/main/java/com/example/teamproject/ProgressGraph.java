@@ -7,23 +7,30 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ListAdapter;
+import android.widget.Spinner;
 
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.database.FirebaseDatabase;
+
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProgressGraph extends AppCompatActivity {
 
     LineChart goalChart;
+    String name;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_graph);
         goalChart=(LineChart) findViewById(R.id.linechart);
+        //put data in graph
         LineDataSet lineDataSet1 = new LineDataSet(dataValues1(), "Data Set 1");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet1);
@@ -36,13 +43,38 @@ public class ProgressGraph extends AppCompatActivity {
     private ArrayList<Entry> dataValues1()
     {
         ArrayList<Entry> dataVals = new ArrayList<Entry>();
-        dataVals.add(new Entry(0,20));
+       /* dataVals.add(new Entry(0,20));
         dataVals.add(new Entry(1,24));
         dataVals.add(new Entry(2,2));
         dataVals.add(new Entry(3,10));
         dataVals.add(new Entry(4,28));
+*/
+        List<Goal> goal = FirebaseLists.getFirebaseList();
+
+
+        int count = 0;
+        for(Goal goalList : goal){
+            //if(name == goalList.getGoalName()){
+            dataVals.add(new Entry( (float) count, (float) goalList.getAccomplished()));
+            count++;
+            //}
+        }
         return dataVals;
     }
+
+
+    //dropdown menu of goals, pass in firebase database, or list of goals
+   /* public void dropDownGoals(){
+        Spinner spinner = (Spinner) findViewById(R.id.goal_dropdown);
+// Create an ArrayAdapter using the string array and a default spinner layout
+        //ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
+                //R.array.planets_array, android.R.layout.simple_spinner_item);
+        ListAdapter adapter = ListAdapter.createFromResource(this, , android.R.layout.simple_spinner_item);
+// Specify the layout to use when the list of choices appears
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+// Apply the adapter to the spinner
+        spinner.setAdapter(adapter);
+    }*/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -67,11 +99,7 @@ public class ProgressGraph extends AppCompatActivity {
                 Intent intent3 = new Intent(this, ProgressGraph.class);
                 this.startActivity(intent3);
                 return true;
-/*            case R.id.friendProgress:
-                Intent intent4 = new Intent(this, SecondFragment.class);
-                this.startActivity(intent4);
-                return true;
-*/            default:
+            default:
                 return super.onOptionsItemSelected(item);
         }
     }

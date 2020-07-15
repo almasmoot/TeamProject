@@ -107,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
         DatabaseReference mDatabase;
         mDatabase = FirebaseDatabase.getInstance().getReference();
         List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
-        description = goals.get("description");
+        //description = goals.get("description");
         setContentView(R.layout.activity_main);
         TextView goal1View = (TextView)findViewById(R.id.goal1);
         goal1View.setText(description);

@@ -40,6 +40,10 @@ public class Goal {
         return goalName;
     }
 
+    public int getAccomplished() {
+        return accomplished;
+    }
+
     public void setDescription(String description) {
         this.description = description;
     }
