@@ -9,6 +9,14 @@ public class Goal {
     private int accomplished;
     private Calendar date;
 
+    public Goal()
+    {
+        goalName = "";
+        description = "";
+        quantity = 0;
+        accomplished = 0;
+        date = Calendar.getInstance();
+    }
     public Goal(Goal goal)
     {
         goalName = goal.getGoalName();
@@ -38,6 +46,10 @@ public class Goal {
 
     public String getGoalName() {
         return goalName;
+    }
+
+    public int getAccomplished() {
+        return accomplished;
     }
 
     public void setDescription(String description) {
@@ -72,6 +84,6 @@ public class Goal {
     }
     @Override
     public String toString() {
-        return description;
+        return goalName + '\n' +description;
     }
 }

@@ -1,5 +1,7 @@
 package com.example.teamproject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -9,9 +11,11 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
+import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +29,9 @@ import java.util.List;
 import java.util.Set;
 
 import com.example.teamproject.R;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
@@ -33,21 +40,59 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
-    private CheckBox goal1_check, goal2_check, goal3_check;
+
+//    private CheckBox goal1_check, goal2_check, goal3_check;
     ArrayList<String> numberList = new ArrayList<>();
+    ArrayList<String> arrayList = new ArrayList<>();
+    ArrayAdapter<String> arrayAdapter;
+    DatabaseReference databaseReference;
+    ListView listView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        addListenerOnButton();
+        databaseReference=FirebaseDatabase.getInstance().getReference("goals");
+        listView=(ListView) findViewById(R.id.goalsView);
+        arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,arrayList);
+        listView.setAdapter(arrayAdapter);
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                String value=snapshot.getValue(Goal.class).toString();
+                arrayList.add(value);
+                arrayAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError error) {
+
+            }
+        });
+//        addListenerOnButton();
     }
 
     // assign the checkboxes values
-    public void addListenerOnButton() {
-        goal1_check = (CheckBox) findViewById(R.id.goal1);
-        goal2_check = (CheckBox) findViewById(R.id.goal2);
-        goal3_check = (CheckBox) findViewById(R.id.goal3);
-    }
+//    public void addListenerOnButton() {
+//        goal1_check = (CheckBox) findViewById(R.id.goal1);
+//        goal2_check = (CheckBox) findViewById(R.id.goal2);
+//        goal3_check = (CheckBox) findViewById(R.id.goal3);
+//    }
 
     // Creates the menu
     @Override
@@ -98,20 +143,23 @@ public class MainActivity extends AppCompatActivity {
 //        TextView goal1View = (TextView)findViewById(R.id.goal1);
 //        goal1View.setText(description);
 //    }
-    public void getGoals() {
-        boolean daily = false;
-        boolean weekly = false;
-        boolean oneTime = false;
-        String description = "";
-        String quantity;
-        DatabaseReference mDatabase;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
-        description = goals.get("description");
-        setContentView(R.layout.activity_main);
-        TextView goal1View = (TextView)findViewById(R.id.goal1);
-        goal1View.setText(description);
-    }
+//    public void showGoals() {
+//        boolean daily = false;
+//        boolean weekly = false;
+//        boolean oneTime = false;
+//        String description = "";
+//        String quantity;
+//        DatabaseReference mDatabase;
+//        mDatabase = FirebaseDatabase.getInstance().getReference();
+//        List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
+//        for (Goal goal : goals) {
+//
+//        }
+//        description = goals.get("description");
+//        setContentView(R.layout.activity_main);
+//        ListView goal1View = (ListView)findViewById(R.id.goal1);
+//        goal1View.setText(description);
+//    }
 
     // Navigation with the menu
     @Override

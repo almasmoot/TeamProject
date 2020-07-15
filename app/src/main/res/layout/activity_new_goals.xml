@@ -66,6 +66,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
+        android:checkedButton="@id/radioOneTime"
         app:layout_constraintBottom_toTopOf="@+id/textViewQuantity"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -76,7 +77,9 @@
             android:id="@+id/radioDaily"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:checked="true"
             android:text="@string/Daily_Radio"
+            android:onClick="onRadioButtonClicked"
             tools:layout_editor_absoluteX="84dp"
             tools:layout_editor_absoluteY="186dp" />
 
@@ -85,6 +88,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/Weekly_Radio"
+            android:onClick="onRadioButtonClicked"
             tools:layout_editor_absoluteX="85dp"
             tools:layout_editor_absoluteY="230dp" />
 
@@ -93,6 +97,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/One_Time_Radio"
+            android:onClick="onRadioButtonClicked"
             tools:layout_editor_absoluteX="93dp"
             tools:layout_editor_absoluteY="280dp" />
     </RadioGroup>
