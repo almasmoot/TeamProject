@@ -57,7 +57,11 @@ public class NewGoals extends AppCompatActivity {
 
         selectDate = findViewById(R.id.btnDate);
         date = findViewById(R.id.tvSelectedDate);
-
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        date.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR)));
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
