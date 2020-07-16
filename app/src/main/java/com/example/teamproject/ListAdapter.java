@@ -57,7 +57,7 @@ public class GoalList {
         private Context context;
 
         public GoalAdapter(List<GoalList> firebaseList, Context context) {
-            super(context, R.layout.single_listview_item, firebaseList);
+            //super(context, R.layout.single_listview_item, firebaseList);
             this.firebaseList = firebaseList;
             this.context = context;
         }
@@ -72,17 +72,16 @@ public class GoalList {
 
             GoalHolder holder = new GoalHolder();
 
-            if(convertView == null) {
+            if (convertView == null) {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                v = inflater.inflate(R.layout.single_listview_item, null);
+                //v = inflater.inflate(R.layout.single_listview_item, null);
 
                 holder.goalName = (TextView) v.findViewById(R.id.textView4);
                 holder.description = (TextView) v.findViewById(R.id.description);
-                holder.chkBox   = (CheckBox) v.findViewById(R.id.chk_box);
+                holder.chkBox = (CheckBox) v.findViewById(R.id.chk_box);
 
                 holder.chkBox.setOnCheckedChangeListener((CurrentGoalsScreen) context);
-            }
-            else {
+            } else {
                 holder = (GoalHolder) v.getTag();
             }
 
