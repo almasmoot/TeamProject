@@ -56,8 +56,8 @@ public class MainActivity extends AppCompatActivity {
         listView=(ListView) findViewById(R.id.goalsView);
         arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,arrayList);
         listView.setAdapter(arrayAdapter);
-        databaseReference.addChildEventListener(new ChildEventListener() {
-            @Override
+        //databaseReference.addChildEventListener(new ChildEventListener() {
+            /*@Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String value=snapshot.getValue(Goal.class).toString();
                 arrayList.add(value);
@@ -83,7 +83,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });
+        });*/
 //        addListenerOnButton();
     }
 

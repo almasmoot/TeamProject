@@ -1,72 +1,81 @@
 package com.example.teamproject;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.database.DataSetObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.DatePicker;
 import android.widget.ListAdapter;
 import android.widget.TextView;
 
+import java.util.Calendar;
 import java.util.List;
-
-public class GoalList {
-
-    // local variables
-    String name;
-    String description;
-    boolean selected = false;
-
-    // constructor
-    public GoalList (String name, String description) {
-        this.name = name;
-        this.description = description;
-    }
-
-    // getters and setters
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public boolean isSelected() {
-        return selected;
-    }
-
-    public void setSelected(boolean selected) {
-        this.selected = selected;
-    }
 
     // display the list
 
-    public class GoalAdapter extends ListAdapter<FirebaseLists> {
+    public class GoalAdapter extends ArrayAdapter {
 
-        private List<GoalList> firebaseList;
+        private static final String EXTRA_MESSAGE = "com.example.teamproject.GoalAdapter";
+        private List<Goal> firebaseList;
         private Context context;
 
-        public GoalAdapter(List<GoalList> firebaseList, Context context) {
+        public GoalAdapter(List<Goal> firebaseList, Context context) {
             super(context, R.layout.single_listview_item, firebaseList);
             this.firebaseList = firebaseList;
             this.context = context;
         }
 
+        @Override
+        public boolean areAllItemsEnabled() {
+            return false;
+        }
+
+        @Override
+        public boolean isEnabled(int position) {
+            return false;
+        }
+
         private class GoalHolder {
-            public TextView goalName;
-            public TextView description;
+            public Button goal;
             public CheckBox chkBox;
         }
+
+        @Override
+        public void registerDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public void unregisterDataSetObserver(DataSetObserver observer) {
+
+        }
+
+        @Override
+        public int getCount() {
+            return 0;
+        }
+
+        @Override
+        public Object getItem(int position) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int position) {
+            return 0;
+        }
+
+        @Override
+        public boolean hasStableIds() {
+            return false;
+        }
+
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = convertView;
 
@@ -76,24 +85,50 @@ public class GoalList {
                 LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 v = inflater.inflate(R.layout.single_listview_item, null);
 
-                holder.goalName = (TextView) v.findViewById(R.id.textView4);
-                holder.description = (TextView) v.findViewById(R.id.description);
-                holder.chkBox   = (CheckBox) v.findViewById(R.id.chk_box);
+                holder.goal   = (Button) v.findViewById(R.id.button);
+                holder.chkBox = (CheckBox) v.findViewById(R.id.chk_box);
 
                 holder.chkBox.setOnCheckedChangeListener((CurrentGoalsScreen) context);
+
             }
             else {
                 holder = (GoalHolder) v.getTag();
             }
 
-            Goal g = GoalList.get(position);
-            holder.goalName.setText(g.getGoalName());
-            holder.description.setText(g.getDescription());
+            final Goal g = firebaseList.get(position);
+            holder.goal.setText(g.toString());
+            holder.goal.setOnClickListener(new View.OnClickListener() {
+
+                @Override
+                public void onClick(View view) {
+                    Intent intent = new Intent(context, ProgressGraph.class);
+                    intent.putExtra(EXTRA_MESSAGE, (g.toString()));
+                    context.startActivity(intent);
+                }
+            });
+
             holder.chkBox.setChecked(g.goalAchieved());
             holder.chkBox.setTag(g);
 
             return v;
         }
-    }
 
-}
+        public void toGraph(View view) {
+
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            return 0;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 0;
+        }
+
+        @Override
+        public boolean isEmpty() {
+            return false;
+        }
+    }
