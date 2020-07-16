@@ -72,6 +72,7 @@ public class Goal {
     }
 
     public void goalAchieved(){accomplished = quantity;}
+    public boolean isAccomplished(){if(accomplished == quantity){return true;}else return false;}
 
     public Boolean laterGoal(Goal goal)
     {
