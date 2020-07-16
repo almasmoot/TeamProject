@@ -12,18 +12,36 @@ import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static androidx.constraintlayout.widget.Constraints.TAG;
 
 public class FirebaseLists {
 
-    public static List getFirebaseList() {
-        DatabaseReference mDatabase;
-        mDatabase = FirebaseDatabase.getInstance().getReference();
-        Query query = mDatabase.child("goals");
+    public static final String TAG = "FirebaseLists";
+    private DatabaseReference mReference;
+    private Map<String,Goal> goals;
+    public List getFirebaseList() {
 
-        List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
-        return goals;
+        mReference = FirebaseDatabase.getInstance().getReference().child("goals");
+        ValueEventListener goalListener = new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+
+                goals = dataSnapshot.getValue(Map.class);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+                // Getting Post failed, log a message
+                Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+                // ...
+            }
+        };
+        mReference.addValueEventListener(goalListener);
+        List<Goal> goalvalues = new ArrayList<Goal>(goals.values());
+
+        return goalvalues;
     }
 
     public static void updateFirebaseList(List goals) {
