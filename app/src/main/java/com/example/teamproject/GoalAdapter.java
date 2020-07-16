@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.DatePicker;
 import android.widget.ListAdapter;
 import android.widget.TextView;
@@ -88,7 +89,13 @@ import java.util.List;
                 holder.goal   = (Button) v.findViewById(R.id.button);
                 holder.chkBox = (CheckBox) v.findViewById(R.id.chk_box);
 
-                holder.chkBox.setOnCheckedChangeListener((CurrentGoalsScreen) context);
+                holder.chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+                    @Override
+                    public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                        //what do you do when it's checked?
+
+                    }
+                });
 
             }
             else {
@@ -107,7 +114,7 @@ import java.util.List;
                 }
             });
 
-            holder.chkBox.setChecked(g.goalAchieved());
+            holder.chkBox.setChecked(g.isAccomplished());
             holder.chkBox.setTag(g);
 
             return v;
