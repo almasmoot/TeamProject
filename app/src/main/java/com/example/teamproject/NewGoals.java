@@ -28,6 +28,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.example.teamproject.FirebaseLists.goals;
+
 public class NewGoals extends AppCompatActivity {
 
 
@@ -117,17 +119,19 @@ public class NewGoals extends AppCompatActivity {
         Goal createdGoal = new Goal(name,description,quantity,calendar);
         long today = Calendar.getInstance().getTimeInMillis();
         long deadline = calendar.getTimeInMillis();
+        String key;
         switch(frequency)
         {
             case 0: // one time
-               String key = mDatabase.child("goals").push().getKey();
+               key = mDatabase.child("goals").push().getKey();
                mDatabase.child("goals").child(key).setValue(createdGoal);
                 break;
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
-                    key = new String(mDatabase.child("goals").push().getKey());
-                    mDatabase.child("goals").child(key).setValue(createdGoal);
+                    key = mDatabase.child("goals").push().getKey();
+                    mDatabase.child("goals").child(key).update(createdGoal);
+                    mDatabase.updateChildren(<(/goals)>)
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     deadline = deadline - 604800000;
@@ -139,7 +143,7 @@ public class NewGoals extends AppCompatActivity {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     //myRef.setValue(createdGoal);
-                    key = new String(mDatabase.child("goals").push().getKey());
+                    key = mDatabase.child("goals").push().getKey();
                     mDatabase.child("goals").child(key).setValue(createdGoal);
                     deadline = deadline - 86400000;
                 }
