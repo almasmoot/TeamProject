@@ -19,9 +19,9 @@ import static androidx.constraintlayout.widget.Constraints.TAG;
 public class FirebaseLists {
 
     public static final String TAG = "FirebaseLists";
-    private DatabaseReference mReference;
-    private Map<String,Goal> goals;
-    public List getFirebaseList() {
+    private static DatabaseReference mReference;
+    public static Map<String,Goal> goals;
+    public static List getFirebaseList() {
 
         mReference = FirebaseDatabase.getInstance().getReference().child("goals");
         ValueEventListener goalListener = new ValueEventListener() {
