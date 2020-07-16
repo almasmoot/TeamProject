@@ -120,20 +120,20 @@ public class NewGoals extends AppCompatActivity {
         long today = Calendar.getInstance().getTimeInMillis();
         long deadline = calendar.getTimeInMillis();
         String key;
+        Map<String,Object> childUpdate = new HashMap<>();
         switch(frequency)
         {
             case 0: // one time
                key = mDatabase.child("goals").push().getKey();
-               mDatabase.child("goals").child(key).setValue(createdGoal);
+               childUpdate.put("/goals/"+key,createdGoal);
                 break;
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
                     key = mDatabase.child("goals").push().getKey();
-                    mDatabase.child("goals").child(key).update(createdGoal);
-                    mDatabase.updateChildren(<(/goals)>)
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
+                    childUpdate.put("/goals/"+key,goalIn);
                     deadline = deadline - 604800000;
                 }
                 break;
@@ -142,15 +142,14 @@ public class NewGoals extends AppCompatActivity {
                 {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
-                    //myRef.setValue(createdGoal);
                     key = mDatabase.child("goals").push().getKey();
-                    mDatabase.child("goals").child(key).setValue(createdGoal);
+                    childUpdate.put("/goals/"+key,goalIn);
                     deadline = deadline - 86400000;
                 }
                 break;
             default:
         }
-
+        mDatabase.updateChildren(childUpdate);
         Intent intent = new Intent(this,MainActivity.class);
         startActivity(intent);
     }
