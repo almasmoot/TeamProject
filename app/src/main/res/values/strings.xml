@@ -15,4 +15,5 @@
     <string name="goal_3">Goal 3</string>
     <string name="goal3_desc">Goal Desc.</string>
     <string name="noCurrentGoals">No Current Goals</string>
+    <string name="toGraph">Graph your progress</string>
 </resources>
