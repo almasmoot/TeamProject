@@ -57,7 +57,11 @@ public class NewGoals extends AppCompatActivity {
 
         selectDate = findViewById(R.id.btnDate);
         date = findViewById(R.id.tvSelectedDate);
-
+        calendar = Calendar.getInstance();
+        year = calendar.get(Calendar.YEAR);
+        month = calendar.get(Calendar.MONTH);
+        dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        date.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR)));
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -122,6 +126,8 @@ public class NewGoals extends AppCompatActivity {
             case 1: // weekly recurrence
                 while(deadline > today)
                 {
+                    key = new String(mDatabase.child("goals").push().getKey());
+                    mDatabase.child("goals").child(key).setValue(createdGoal);
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     deadline = deadline - 604800000;
@@ -133,7 +139,8 @@ public class NewGoals extends AppCompatActivity {
                     Goal goalIn = new Goal(createdGoal);
                     goalIn.setDate(deadline);
                     //myRef.setValue(createdGoal);
-
+                    key = new String(mDatabase.child("goals").push().getKey());
+                    mDatabase.child("goals").child(key).setValue(createdGoal);
                     deadline = deadline - 86400000;
                 }
                 break;

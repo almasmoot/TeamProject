@@ -71,7 +71,7 @@ public class Goal {
         date.setTimeInMillis(millis);
     }
 
-    public Boolean goalAchieved(){return (accomplished >= quantity);}
+    public void goalAchieved(){accomplished = quantity;}
 
     public Boolean laterGoal(Goal goal)
     {
