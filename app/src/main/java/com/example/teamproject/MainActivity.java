@@ -41,8 +41,6 @@ import org.json.JSONObject;
 
 public class MainActivity extends AppCompatActivity {
 
-//    private CheckBox goal1_check, goal2_check, goal3_check;
-    ArrayList<String> numberList = new ArrayList<>();
     ArrayList<String> arrayList = new ArrayList<>();
     ArrayAdapter<String> arrayAdapter;
     DatabaseReference databaseReference;
@@ -54,10 +52,11 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         databaseReference=FirebaseDatabase.getInstance().getReference("goals");
         listView=(ListView) findViewById(R.id.goalsView);
-        arrayAdapter=new ArrayAdapter<String>(this,android.R.layout.simple_expandable_list_item_1,arrayList);
+        arrayAdapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,arrayList);
+
         listView.setAdapter(arrayAdapter);
-        //databaseReference.addChildEventListener(new ChildEventListener() {
-            /*@Override
+        databaseReference.addChildEventListener(new ChildEventListener() {
+            @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                 String value=snapshot.getValue(Goal.class).toString();
                 arrayList.add(value);
@@ -83,7 +82,7 @@ public class MainActivity extends AppCompatActivity {
             public void onCancelled(@NonNull DatabaseError error) {
 
             }
-        });*/
+        });
 //        addListenerOnButton();
     }
 

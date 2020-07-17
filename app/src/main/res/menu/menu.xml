@@ -14,9 +14,4 @@
         android:id="@+id/progress"
         android:title="See Your Progress"
         app:showAsAction="never" />
-    <item
-        android:id="@+id/friendProgress"
-        android:title="See Your Friends Progress"
-        app:showAsAction="never">
-    </item>
 </menu>
