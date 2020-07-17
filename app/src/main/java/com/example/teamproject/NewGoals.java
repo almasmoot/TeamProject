@@ -42,7 +42,7 @@ public class NewGoals extends AppCompatActivity {
     private Calendar calendar;
     public static final String EXTRA_MESSAGE = "com.example.teamproject.MESSAGE";
     public static final String TAG = "NewGoals";
-    private int frequency = 0; //0 for once, 1 for weekly, 2 for Daily
+    private int frequency = 2; //0 for once, 1 for weekly, 2 for Daily
 
 
     @Override
@@ -63,7 +63,7 @@ public class NewGoals extends AppCompatActivity {
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        date.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH) + "/" + calendar.get(Calendar.YEAR)));
+        date.setText(calendar.get(Calendar.DAY_OF_MONTH) + "/" + (calendar.get(Calendar.MONTH)+1) + "/" + calendar.get(Calendar.YEAR));
         selectDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -117,35 +117,37 @@ public class NewGoals extends AppCompatActivity {
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
         int quantity = Integer.parseInt(editText2.getText().toString());
         Goal createdGoal = new Goal(name,description,quantity,calendar);
-        long today = Calendar.getInstance().getTimeInMillis();
+        Calendar today = Calendar.getInstance();
         long deadline = calendar.getTimeInMillis();
         String key;
+        int count = 0;
         Map<String,Object> childUpdate = new HashMap<>();
         switch(frequency)
         {
             case 0: // one time
-               key = mDatabase.child("goals").push().getKey();
-               childUpdate.put("/goals/"+key,createdGoal);
+                key = mDatabase.child("goals").push().getKey();
+                childUpdate.put("/goals/"+key,createdGoal);
                 break;
             case 1: // weekly recurrence
-                while(deadline > today)
+                do
                 {
                     key = mDatabase.child("goals").push().getKey();
                     Goal goalIn = new Goal(createdGoal);
-                    goalIn.setDate(deadline);
+                    goalIn.setDate(deadline-604800000*count);
                     childUpdate.put("/goals/"+key,goalIn);
-                    deadline = deadline - 604800000;
-                }
+                    count++;
+                }while((deadline-604800000*count) > today.getTimeInMillis());
+
                 break;
             case 2: // daily recurrence
-                while(deadline > today)
+                do
                 {
                     Goal goalIn = new Goal(createdGoal);
-                    goalIn.setDate(deadline);
+                    goalIn.setDate(deadline - 86400000*count);
                     key = mDatabase.child("goals").push().getKey();
                     childUpdate.put("/goals/"+key,goalIn);
-                    deadline = deadline - 86400000;
-                }
+                    count++;
+                }while((deadline - 86400000*count) > today.getTimeInMillis());
                 break;
             default:
         }
