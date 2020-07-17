@@ -14,6 +14,7 @@ public class CurrentGoalsScreen extends AppCompatActivity {
     GoalAdapter glAdapter;
     //initialize list here
     //GoalList.GoalAdapter goalAdapter;
+    public static final String EXTRA_MESSAGE = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
