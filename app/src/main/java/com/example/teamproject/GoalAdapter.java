@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.database.DataSetObserver;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,6 +32,7 @@ import java.util.List;
             this.firebaseList = firebaseList;
             this.context = context;
         }
+
 
         @Override
         public boolean areAllItemsEnabled() {
@@ -87,7 +89,7 @@ import java.util.List;
                 v = inflater.inflate(R.layout.single_listview_item, null);
 
                 holder.goal   = (Button) v.findViewById(R.id.button);
-                holder.chkBox = (CheckBox) v.findViewById(R.id.chk_box);
+                //holder.chkBox = (CheckBox) v.findViewById(R.id.chk_box);
 
                 holder.chkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                     @Override
