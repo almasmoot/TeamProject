@@ -127,29 +127,17 @@ public class NewGoals extends AppCompatActivity {
             String message = "required fields not filled out:";
             if(quantity==0)
             {
-                message += " please enter a quantity";
+                message += "\nplease enter a quantity";
             }
             if(name.isEmpty())
             {
-                if(message == "required fields not filled out:")
-                message += "please enter a goal name";
-                else
-                {
-                    message += ",please enter a goal name";
-                }
+                message += "\nplease enter a goal name";
             }
             if(description.isEmpty())
             {
-                if(message == "required fields not filled out:")
-                {
-                    message += "please enter goal description";
-                }
-                else
-                {
-                    message += ",please enter goal description";
-                }
+                message += "\nplease enter goal description";
             }
-            message.concat(".");
+            message += ".";
             Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
         }
         else {
