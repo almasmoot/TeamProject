@@ -16,6 +16,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
+
     <ListView
         android:id="@+id/goalsView"
         android:layout_width="344dp"
@@ -25,68 +26,5 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/calendarView" />
 
-    <!--    <LinearLayout-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:orientation="vertical">-->
-<!--        -->
-<!--            <ListView-->
-<!--                android:layout_width="@+id/"-->
-<!--                android:layout_height=""-->
-<!--    </LinearLayout>-->
 
-<!--    <CheckBox-->
-<!--        android:id="@+id/goal1"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="40dp"-->
-<!--        android:layout_marginLeft="40dp"-->
-<!--        android:layout_marginTop="50dp"-->
-<!--        android:text="@string/goal_1"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/calendarView" />-->
-
-<!--    <CheckBox-->
-<!--        android:id="@+id/goal2"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="40dp"-->
-<!--        android:layout_marginLeft="40dp"-->
-<!--        android:layout_marginTop="25dp"-->
-<!--        android:text="@string/goal_2"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/goal1" />-->
-
-<!--    <CheckBox-->
-<!--        android:id="@+id/goal3"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginStart="40dp"-->
-<!--        android:layout_marginLeft="40dp"-->
-<!--        android:layout_marginTop="30dp"-->
-<!--        android:text="@string/goal_3"-->
-<!--        app:layout_constraintStart_toStartOf="parent"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/goal2" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/goal3desc"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        android:text="goal_desc"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.314"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/goal3"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/goal2desc" />-->
-
-<!--    <TextView-->
-<!--        android:id="@+id/goal2desc"-->
-<!--        android:layout_width="wrap_content"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_marginTop="40dp"-->
-<!--        android:text="goal_desc"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintHorizontal_bias="0.314"-->
-<!--        app:layout_constraintStart_toEndOf="@+id/goal2"-->
-<!--        app:layout_constraintTop_toBottomOf="@+id/goal1desc" />-->
 </androidx.constraintlayout.widget.ConstraintLayout>

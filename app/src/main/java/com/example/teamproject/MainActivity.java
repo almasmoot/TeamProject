@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -42,6 +43,7 @@ import org.json.JSONObject;
 public class MainActivity extends AppCompatActivity {
 
     ArrayList<String> arrayList = new ArrayList<>();
+    ArrayList<String> selectedItems;
     ArrayAdapter<String> arrayAdapter;
     DatabaseReference databaseReference;
     ListView listView;
@@ -50,10 +52,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        selectedItems=new ArrayList<String>();
         databaseReference=FirebaseDatabase.getInstance().getReference("goals");
         listView=(ListView) findViewById(R.id.goalsView);
-        arrayAdapter = new ArrayAdapter<String>(MainActivity.this,android.R.layout.simple_list_item_1,arrayList);
-
+        arrayAdapter = new ArrayAdapter<String>(MainActivity.this,R.layout.checkable_list_layout,R.id.txt_title,arrayList);
         listView.setAdapter(arrayAdapter);
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
@@ -83,15 +85,20 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-//        addListenerOnButton();
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                // selected item
+                String selectedItem = ((TextView) view).getText().toString();
+                if(selectedItems.contains(selectedItem))
+                    selectedItems.remove(selectedItem); //remove deselected item from the list of selected items
+                else
+                    selectedItems.add(selectedItem); //add selected item to the list of selected items
+
+            }
+
+        });
     }
 
-    // assign the checkboxes values
-//    public void addListenerOnButton() {
-//        goal1_check = (CheckBox) findViewById(R.id.goal1);
-//        goal2_check = (CheckBox) findViewById(R.id.goal2);
-//        goal3_check = (CheckBox) findViewById(R.id.goal3);
-//    }
 
     // Creates the menu
     @Override
@@ -101,64 +108,19 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-//    public void get_json() {
-//        String json;
-//        boolean daily = false;
-//        boolean weekly = false;
-//        boolean oneTime = false;
-//        String description = "";
-//        String quantity;
-//        try {
-//            InputStream is = getAssets().open("file_that_has_goals?");
-//            int size = is.available();
-//            byte[] buffer = new byte[size];
-//            is.read(buffer);
-//            is.close();
-//
-//            json = new String(buffer, "UTF-8");
-//            JSONArray jsonArray = new JSONArray(json);
-//
-//            for(int i = 0; i <jsonArray.length(); i++) {
-//                JSONObject obj = jsonArray.getJSONObject(i);
-//                if (obj.getString("frequency").equals("daily")) {
-//                    daily = true;
-//                }
-//                if (obj.getString("frequency").equals("weekly")) {
-//                    weekly = true;
-//                }
-//                if (obj.getString("frequency").equals("oneTime")) {
-//                    oneTime = true;
-//                }
-//                quantity = obj.getString("quantity");
-//                description = obj.getString("description");
-//            }
-//        }catch (IOException e) {
-//            e.printStackTrace();
-//        }catch(JSONException e) {
-//            e.printStackTrace();
-//        }
-//
-//        setContentView(R.layout.activity_main);
-//        TextView goal1View = (TextView)findViewById(R.id.goal1);
-//        goal1View.setText(description);
-//    }
-//    public void showGoals() {
-//        boolean daily = false;
-//        boolean weekly = false;
-//        boolean oneTime = false;
-//        String description = "";
-//        String quantity;
-//        DatabaseReference mDatabase;
-//        mDatabase = FirebaseDatabase.getInstance().getReference();
-//        List<Goal> goals = (List<Goal>) mDatabase.child("goals").getDatabase();
-//        for (Goal goal : goals) {
-//
-//        }
-//        description = goals.get("description");
-//        setContentView(R.layout.activity_main);
-//        ListView goal1View = (ListView)findViewById(R.id.goal1);
-//        goal1View.setText(description);
-//    }
+    public void showSelectedItems(View view){
+        String selItems="";
+        for(String item:selectedItems){
+            if(selItems=="")
+                selItems=item;
+            else
+                selItems+="/"+item;
+        }
+        Toast.makeText(this, selItems, Toast.LENGTH_LONG).show();
+    }
+
+
+
 
     // Navigation with the menu
     @Override
