@@ -26,6 +26,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class ProgressGraph extends AppCompatActivity {
@@ -39,14 +40,17 @@ public class ProgressGraph extends AppCompatActivity {
         setContentView(R.layout.activity_progress_graph);
         goalChart=(LineChart) findViewById(R.id.linechart);
         //put data in graph
-
+        Intent intent = getIntent();
+        goalName = intent.getStringExtra(CurrentGoalsScreen.EXTRA_MESSAGE);
         LineDataSet lineDataSet1 = new LineDataSet(dataValues1(), "Data Set 1");
+
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet1);
 
         LineData data = new LineData(dataSets);
         goalChart.setData(data);
         goalChart.invalidate();
+
 
 
     }
@@ -62,8 +66,10 @@ public class ProgressGraph extends AppCompatActivity {
                 public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
                     //check for specific goalname that was passed from the call
                     //get intent and stuff
+                    //Calendar goalDate = Calendar.getInstance();
                     if(goalName == snapshot.getValue(Goal.class).getGoalName()) {
-                        dataVals.add(new Entry (snapshot.getValue(Goal.class).getDate().getDay(), snapshot.getValue(Goal.class).getAccomplished()));
+                        //goalDate.setTimeInMillis(snapshot.getValue(Goal.class).getDate().getTime());
+                        dataVals.add(new Entry ((int)snapshot.getValue(Goal.class).getDate().getTime()/86400000, snapshot.getValue(Goal.class).getAccomplished()));
                     }
                     //String value=snapshot.getValue(Goal.class).toString();
                     //arrayList.add(value);
