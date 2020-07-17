@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity {
         selectedItems=new ArrayList<String>();
         databaseReference=FirebaseDatabase.getInstance().getReference("goals");
         listView=(ListView) findViewById(R.id.goalsView);
+        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
         arrayAdapter = new ArrayAdapter<String>(MainActivity.this,R.layout.checkable_list_layout,R.id.txt_title,arrayList);
         listView.setAdapter(arrayAdapter);
         databaseReference.addChildEventListener(new ChildEventListener() {
