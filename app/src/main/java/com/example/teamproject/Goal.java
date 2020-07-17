@@ -1,13 +1,14 @@
 package com.example.teamproject;
 
 import java.util.Calendar;
+import java.util.Date;
 
 public class Goal {
     private String goalName;
     private String description;
     private int quantity;
     private int accomplished;
-    private Calendar date;
+    private Date date;
 
     public Goal()
     {
@@ -15,7 +16,7 @@ public class Goal {
         description = "";
         quantity = 0;
         accomplished = 0;
-        date = Calendar.getInstance();
+        date = new Date();
     }
 
     public Goal(Goal goal)
@@ -27,7 +28,7 @@ public class Goal {
         date = goal.getDate();
     }
 
-    public Goal(String name, String description, int quantity, Calendar date)
+    public Goal(String name, String description, int quantity, Date date)
     {
         goalName = name;
         this.description = description;
@@ -40,7 +41,7 @@ public class Goal {
         return quantity;
     }
 
-    public Calendar getDate(){ return date;}
+    public Date getDate(){ return date;}
 
     public String getDescription() {
         return description;
@@ -68,10 +69,7 @@ public class Goal {
 
     public void setAccomplished(int quant){accomplished = quant;}
 
-    public void setDate(long millis)
-    {
-        date.setTimeInMillis(millis);
-    }
+    public void setDate(Date calendar){date = new Date(calendar.getTime());}
 
     public void goalAchieved(){accomplished = quantity;}
 

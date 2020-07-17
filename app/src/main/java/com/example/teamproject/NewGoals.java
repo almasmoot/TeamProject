@@ -116,43 +116,75 @@ public class NewGoals extends AppCompatActivity {
         String description = editText1.getText().toString();
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
         int quantity = Integer.parseInt(editText2.getText().toString());
-        Goal createdGoal = new Goal(name,description,quantity,calendar);
-        Calendar today = Calendar.getInstance();
-        long deadline = calendar.getTimeInMillis();
-        String key;
-        int count = 0;
-        Map<String,Object> childUpdate = new HashMap<>();
-        switch(frequency)
+        if((quantity == 0)||(name == "")||(description==""))
         {
-            case 0: // one time
-                key = mDatabase.child("goals").push().getKey();
-                childUpdate.put("/goals/"+key,createdGoal);
-                break;
-            case 1: // weekly recurrence
-                do
+            String message = "required fields not filled out:";
+            if(quantity==0)
+            {
+                message.concat("please enter a quantity");
+            }
+            if(name == "")
+            {
+                if(message == "required fields not filled out:")
+                message.concat("please enter a goal name");
+                else
                 {
-                    key = mDatabase.child("goals").push().getKey();
-                    Goal goalIn = new Goal(createdGoal);
-                    goalIn.setDate(deadline-604800000*count);
-                    childUpdate.put("/goals/"+key,goalIn);
-                    count++;
-                }while((deadline-604800000*count) > today.getTimeInMillis());
-
-                break;
-            case 2: // daily recurrence
-                do
+                    message.concat(",please enter a goal name");
+                }
+            }
+            if(description == "")
+            {
+                if(message == "required fields not filled out:")
                 {
-                    Goal goalIn = new Goal(createdGoal);
-                    goalIn.setDate(deadline - 86400000*count);
-                    key = mDatabase.child("goals").push().getKey();
-                    childUpdate.put("/goals/"+key,goalIn);
-                    count++;
-                }while((deadline - 86400000*count) > today.getTimeInMillis());
-                break;
-            default:
+                    message.concat("please enter goal description");
+                }
+                else
+                {
+                    message.concat(",please enter goal description");
+                }
+            }
+            message.concat(".");
+            Toast.makeText(this,message,Toast.LENGTH_LONG).show();
         }
-        mDatabase.updateChildren(childUpdate);
-        Intent intent = new Intent(this,MainActivity.class);
-        startActivity(intent);
+        else {
+            Goal createdGoal = new Goal(name, description, quantity, calendar.getTime());
+            Calendar today = Calendar.getInstance();
+            Calendar temp = Calendar.getInstance();
+            temp.set(year, month, dayOfMonth);
+            String key;
+            int count = 0;
+            Map<String, Object> childUpdate = new HashMap<>();
+            switch (frequency) {
+                case 0: // one time
+                    key = mDatabase.child("goals").push().getKey();
+                    childUpdate.put("/goals/" + key, createdGoal);
+                    break;
+                case 1: // weekly recurrence
+                    while (today.before(temp)) {
+                        key = mDatabase.child("goals").push().getKey();
+                        Goal goalIn = new Goal(createdGoal);
+                        temp.add(temp.DATE, -(7 * count));
+                        goalIn.setDate(temp.getTime());
+                        childUpdate.put("/goals/" + key, goalIn);
+                        count++;
+                    }
+
+                    break;
+                case 2: // daily recurrence
+                    while (today.before(temp)) {
+                        Goal goalIn = new Goal(createdGoal);
+                        temp.add(temp.DATE, -(count));
+                        goalIn.setDate(temp.getTime());
+                        key = mDatabase.child("goals").push().getKey();
+                        childUpdate.put("/goals/" + key, goalIn);
+                        count++;
+                    }
+                    break;
+                default:
+            }
+            mDatabase.updateChildren(childUpdate);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
     }
 }
