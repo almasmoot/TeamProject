@@ -116,9 +116,10 @@ public class NewGoals extends AppCompatActivity {
         String description = editText1.getText().toString();
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
         int quantity = Integer.parseInt(editText2.getText().toString());
-        Goal createdGoal = new Goal(name,description,quantity,calendar);
+        Goal createdGoal = new Goal(name,description,quantity,calendar.getTime());
         Calendar today = Calendar.getInstance();
-        long deadline = calendar.getTimeInMillis();
+        Calendar temp = Calendar.getInstance();
+        temp.set(year,month,dayOfMonth);
         String key;
         int count = 0;
         Map<String,Object> childUpdate = new HashMap<>();
@@ -129,25 +130,27 @@ public class NewGoals extends AppCompatActivity {
                 childUpdate.put("/goals/"+key,createdGoal);
                 break;
             case 1: // weekly recurrence
-                do
+                while(today.before(temp))
                 {
                     key = mDatabase.child("goals").push().getKey();
                     Goal goalIn = new Goal(createdGoal);
-                    goalIn.setDate(deadline-604800000*count);
+                    temp.add(temp.DATE,-(7*count));
+                    goalIn.setDate(temp.getTime());
                     childUpdate.put("/goals/"+key,goalIn);
                     count++;
-                }while((deadline-604800000*count) > today.getTimeInMillis());
+                }
 
                 break;
             case 2: // daily recurrence
-                do
+                while(today.before(temp))
                 {
                     Goal goalIn = new Goal(createdGoal);
-                    goalIn.setDate(deadline - 86400000*count);
+                    temp.add(temp.DATE,-(count));
+                    goalIn.setDate(temp.getTime());
                     key = mDatabase.child("goals").push().getKey();
                     childUpdate.put("/goals/"+key,goalIn);
                     count++;
-                }while((deadline - 86400000*count) > today.getTimeInMillis());
+                }
                 break;
             default:
         }
