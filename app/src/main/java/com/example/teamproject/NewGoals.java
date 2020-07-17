@@ -115,36 +115,30 @@ public class NewGoals extends AppCompatActivity {
         EditText editText1 = (EditText) findViewById(R.id.editTextTextPersonName4);
         String description = editText1.getText().toString();
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
-        int quantity = Integer.parseInt(editText2.getText().toString());
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(editText2.getText().toString());
+        }
+        catch(Exception e)
+        {
+        }
         if((quantity == 0)||(name == "")||(description==""))
         {
             String message = "required fields not filled out:";
             if(quantity==0)
             {
-                message.concat("please enter a quantity");
+                message += "\nplease enter a quantity";
             }
-            if(name == "")
+            if(name.isEmpty())
             {
-                if(message == "required fields not filled out:")
-                message.concat("please enter a goal name");
-                else
-                {
-                    message.concat(",please enter a goal name");
-                }
+                message += "\nplease enter a goal name";
             }
-            if(description == "")
+            if(description.isEmpty())
             {
-                if(message == "required fields not filled out:")
-                {
-                    message.concat("please enter goal description");
-                }
-                else
-                {
-                    message.concat(",please enter goal description");
-                }
+                message += "\nplease enter goal description";
             }
-            message.concat(".");
-            Toast.makeText(this,message,Toast.LENGTH_LONG).show();
+            message += ".";
+            Toast.makeText(getApplicationContext(),message,Toast.LENGTH_LONG).show();
         }
         else {
             Goal createdGoal = new Goal(name, description, quantity, calendar.getTime());
