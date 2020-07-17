@@ -115,7 +115,13 @@ public class NewGoals extends AppCompatActivity {
         EditText editText1 = (EditText) findViewById(R.id.editTextTextPersonName4);
         String description = editText1.getText().toString();
         EditText editText2 = (EditText) findViewById(R.id.editTextNumber);
-        int quantity = Integer.parseInt(editText2.getText().toString());
+        int quantity = 0;
+        try {
+            quantity = Integer.parseInt(editText2.getText().toString());
+        }
+        catch(Exception e)
+        {
+        }
         if((quantity == 0)||(name == "")||(description==""))
         {
             String message = "required fields not filled out:";
