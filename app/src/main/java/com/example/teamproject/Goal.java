@@ -17,6 +17,7 @@ public class Goal {
         accomplished = 0;
         date = Calendar.getInstance();
     }
+
     public Goal(Goal goal)
     {
         goalName = goal.getGoalName();
@@ -40,6 +41,7 @@ public class Goal {
     }
 
     public Calendar getDate(){ return date;}
+
     public String getDescription() {
         return description;
     }
@@ -72,7 +74,7 @@ public class Goal {
     }
 
     public void goalAchieved(){accomplished = quantity;}
-    public boolean isAccomplished(){if(accomplished == quantity){return true;}else return false;}
+
 
     public Boolean laterGoal(Goal goal)
     {

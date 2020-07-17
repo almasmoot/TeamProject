@@ -116,7 +116,7 @@ import java.util.List;
                 }
             });
 
-            holder.chkBox.setChecked(g.isAccomplished());
+            holder.chkBox.setChecked(g.getAccomplished() >= g.getQuantity());
             holder.chkBox.setTag(g);
 
             return v;
