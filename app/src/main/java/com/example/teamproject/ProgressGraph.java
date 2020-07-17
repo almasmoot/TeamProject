@@ -1,5 +1,7 @@
 package com.example.teamproject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -16,6 +18,10 @@ import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.google.firebase.database.ChildEventListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 
 
@@ -25,13 +31,15 @@ import java.util.List;
 public class ProgressGraph extends AppCompatActivity {
 
     LineChart goalChart;
-    String name;
+    String goalName;
+    ArrayList<Entry> dataVals = new ArrayList<Entry>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_progress_graph);
         goalChart=(LineChart) findViewById(R.id.linechart);
         //put data in graph
+
         LineDataSet lineDataSet1 = new LineDataSet(dataValues1(), "Data Set 1");
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
         dataSets.add(lineDataSet1);
@@ -39,28 +47,38 @@ public class ProgressGraph extends AppCompatActivity {
         LineData data = new LineData(dataSets);
         goalChart.setData(data);
         goalChart.invalidate();
+
+
     }
 
     private ArrayList<Entry> dataValues1()
     {
-        ArrayList<Entry> dataVals = new ArrayList<Entry>();
-       /* dataVals.add(new Entry(0,20));
-        dataVals.add(new Entry(1,24));
-        dataVals.add(new Entry(2,2));
-        dataVals.add(new Entry(3,10));
-        dataVals.add(new Entry(4,28));
-*/
-        List<Goal> goal = FirebaseLists.getFirebaseList();
+        DatabaseReference databaseReference;
+        databaseReference=FirebaseDatabase.getInstance().getReference("goals");
 
+        //for loop
+        databaseReference.addChildEventListener(new ChildEventListener() {
+                @Override
+                public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                    //check for specific goalname that was passed from the call
+                    //get intent and stuff
+                    if(goalName == snapshot.getValue(Goal.class).getGoalName()) {
+                        dataVals.add(new Entry (snapshot.getValue(Goal.class).getDate().getDay(), snapshot.getValue(Goal.class).getAccomplished()));
+                    }
+                    //String value=snapshot.getValue(Goal.class).toString();
+                    //arrayList.add(value);
+                    //arrayAdapter.notifyDataSetChanged();
+                }
+                @Override
+                public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                @Override
+                public void onChildRemoved(@NonNull DataSnapshot snapshot) {}
+                @Override
+                public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {}
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {}
+            });
 
-        int count = 0;
-        for(Goal goalList : goal){
-            //checks to see if the goal names line up, only displays data for that name
-            //if(name == goalList.getGoalName()){
-            dataVals.add(new Entry( (float) count, (float) goalList.getAccomplished()));
-            count++;
-            //}
-        }
         return dataVals;
     }
 
