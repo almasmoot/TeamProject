@@ -51,6 +51,10 @@ public class NewGoals extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_goals);
 
+        /*
+        this section sets up the button in the middle of the page to pull up a calendar when it is
+        clicked. from there you can select a date and it will save that to be used for the goal
+         */
         selectDate = findViewById(R.id.btnDate);
         date = findViewById(R.id.tvSelectedDate);
         calendar = Calendar.getInstance();
@@ -79,6 +83,11 @@ public class NewGoals extends AppCompatActivity {
         });
     }
 
+    /*
+    This method handles the radio buttons and changes a global variable to indicate the frequency of
+    the goal.
+     */
+
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
@@ -100,6 +109,11 @@ public class NewGoals extends AppCompatActivity {
         }
     }
 
+    /*
+    This method creates a new goal when the create button is pressed based off of the values in the
+    text fields. if any of the required fields are empty, it will notify the user via a toast about
+    which fields need to be filled out. after creating the goal, it then pushes it up to firebase.
+     */
     public void createGoal(View view)
     {
         DatabaseReference mDatabase;
@@ -141,7 +155,7 @@ public class NewGoals extends AppCompatActivity {
             temp.set(year, month, dayOfMonth);
             String key;
             int count = 0;
-            Map<String, Object> childUpdate = new HashMap<>();
+            Map<String, Object> childUpdate = new HashMap<>(); //use a map for more than one time for additional goals
             switch (frequency) {
                 case 0: // one time
                     key = mDatabase.child("goals").push().getKey();
