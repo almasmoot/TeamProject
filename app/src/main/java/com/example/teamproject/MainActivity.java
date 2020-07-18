@@ -35,6 +35,7 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     DatabaseReference databaseReference;
     ListView listView;
+    Module module;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,12 +90,15 @@ public class MainActivity extends AppCompatActivity {
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                deleteGoal();
                 // selected item
-                String selectedItem = ((TextView) view).getText().toString();
-                if(selectedItems.contains(selectedItem))
-                    selectedItems.remove(selectedItem); //remove deselected item from the list of selected items
-                else
-                    selectedItems.add(selectedItem); //add selected item to the list of selected items
+//                String selectedItem = ((TextView) view).getText().toString();
+//                if(selectedItems.contains(selectedItem)) {
+
+//                    selectedItems.remove(selectedItem); //remove deselected item from the list of selected items
+//                }
+//                else
+//                    selectedItems.add(selectedItem); //add selected item to the list of selected items
 
             }
 
@@ -109,15 +114,13 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
-    public void showSelectedItems(View view){
-        String selItems="";
-        for(String item:selectedItems){
-            if(selItems=="")
-                selItems=item;
-            else
-                selItems+="/"+item;
-        }
-        Toast.makeText(this, selItems, Toast.LENGTH_LONG).show();
+
+    private void deleteGoal() {
+        String goalId = databaseReference.push().getKey();
+        DatabaseReference drGaol = FirebaseDatabase.getInstance().getReference("goals").child(goalId);
+
+        drGaol.removeValue();
+        Toast.makeText(this, "Goal accomplished!", Toast.LENGTH_LONG).show();
     }
 
 
