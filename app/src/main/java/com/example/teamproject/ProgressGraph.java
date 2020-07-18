@@ -32,7 +32,7 @@ import java.util.List;
 public class ProgressGraph extends AppCompatActivity {
 
     LineChart goalChart;
-    String goalName;
+    String goalString;
     ArrayList<Entry> dataVals = new ArrayList<Entry>();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -41,7 +41,7 @@ public class ProgressGraph extends AppCompatActivity {
         goalChart=(LineChart) findViewById(R.id.linechart);
         //put data in graph
         Intent intent = getIntent();
-        goalName = intent.getStringExtra(CurrentGoalsScreen.EXTRA_MESSAGE);
+        goalString = intent.getStringExtra(CurrentGoalsScreen.EXTRA_MESSAGE);
         LineDataSet lineDataSet1 = new LineDataSet(dataValues1(), "Data Set 1");
 
         ArrayList<ILineDataSet> dataSets = new ArrayList<>();
@@ -67,9 +67,10 @@ public class ProgressGraph extends AppCompatActivity {
                     //check for specific goalname that was passed from the call
                     //get intent and stuff
                     //Calendar goalDate = Calendar.getInstance();
-                    if(goalName == snapshot.getValue(Goal.class).getGoalName()) {
+                    Goal temp = snapshot.getValue(Goal.class);
+                    if(goalString == temp.toString()) {
                         //goalDate.setTimeInMillis(snapshot.getValue(Goal.class).getDate().getTime());
-                        dataVals.add(new Entry ((int)snapshot.getValue(Goal.class).getDate().getTime()/86400000, snapshot.getValue(Goal.class).getAccomplished()));
+                        dataVals.add(new Entry ((int)temp.getDate().getTime()/86400000, temp.getAccomplished()));
                     }
                     //String value=snapshot.getValue(Goal.class).toString();
                     //arrayList.add(value);
