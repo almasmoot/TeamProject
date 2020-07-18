@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
                 this.startActivity(intent2);
                 return true;
             case R.id.progress:
-                Intent intent3 = new Intent(this, ProgressGraph.class);
+                Intent intent3 = new Intent(this, MainActivity.class);
                 this.startActivity(intent3);
                 return true;
 /*            case R.id.friendProgress:

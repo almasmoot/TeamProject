@@ -123,7 +123,8 @@ import java.util.List;
         }
 
         public void toGraph(View view) {
-
+            Intent intent = new Intent(context, ProgressGraph.class);
+            context.startActivity(intent);
         }
 
         @Override

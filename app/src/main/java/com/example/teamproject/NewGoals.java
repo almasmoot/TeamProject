@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -43,14 +44,7 @@ public class NewGoals extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.teamproject.MESSAGE";
     public static final String TAG = "NewGoals";
     private int frequency = 2; //0 for once, 1 for weekly, 2 for Daily
-
-
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
+    
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -179,6 +173,39 @@ public class NewGoals extends AppCompatActivity {
             mDatabase.updateChildren(childUpdate);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    // Navigation with the menu
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.newGoal:
+                Intent intent1 = new Intent(this, NewGoals.class);
+                this.startActivity(intent1);
+                return true;
+            case R.id.existingGoals:
+                Intent intent2 = new Intent(this, CurrentGoalsScreen.class);
+                this.startActivity(intent2);
+                return true;
+            case R.id.progress:
+                Intent intent3 = new Intent(this, MainActivity.class);
+                this.startActivity(intent3);
+                return true;
+/*            case R.id.friendProgress:
+                Intent intent4 = new Intent(this, SecondFragment.class);
+                this.startActivity(intent4);
+                return true;
+*/            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
