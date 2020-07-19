@@ -166,22 +166,24 @@ public class NewGoals extends AppCompatActivity {
                 case 1: // weekly recurrence
                     while (today.before(temp)) {
                         Goal goalIn = new Goal(createdGoal);
-                        temp.add(temp.DATE, -(7 * count));
+
                         goalIn.setDate(temp.getTime());
                         key = mDatabase.child("goals").push().getKey();
                         childUpdate.put("/goals/"+key,goalIn);
                         count++;
+                        temp.add(temp.DATE, -(7 * count));
                     }
 
                     break;
                 case 2: // daily recurrence
                     while (today.before(temp)) {
                         Goal goalIn = new Goal(createdGoal);
-                        temp.add(temp.DATE, -(count));
+
                         goalIn.setDate(temp.getTime());
                         key = mDatabase.child("goals").push().getKey();
                         childUpdate.put("/goals/"+key,goalIn);
                         count++;
+                        temp.add(temp.DATE, -(count));
                     }
                     break;
                 default:
