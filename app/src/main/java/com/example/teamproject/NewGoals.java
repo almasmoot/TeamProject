@@ -45,7 +45,7 @@ public class NewGoals extends AppCompatActivity {
     private Calendar calendar;
     public static final String EXTRA_MESSAGE = "com.example.teamproject.MESSAGE";
     public static final String TAG = "NewGoals";
-    private int frequency = 2; //0 for once, 1 for weekly, 2 for Daily
+    private int frequency = 0; //0 for once, 1 for weekly, 2 for Daily
 
 
     @Override
@@ -153,7 +153,6 @@ public class NewGoals extends AppCompatActivity {
         else {
             Goal createdGoal = new Goal(name, description, quantity, calendar.getTime());
             Calendar today = Calendar.getInstance();
-            today.add(today.DATE,1);
             Calendar temp = Calendar.getInstance();
             temp.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
             String key;
@@ -165,8 +164,8 @@ public class NewGoals extends AppCompatActivity {
                     break;
                 case 1: // weekly recurrence
                     while (today.before(temp)) {
+                        today.add(today.DATE,1);
                         Goal goalIn = new Goal(createdGoal);
-
                         goalIn.setDate(temp.getTime());
                         key = mDatabase.child("goals").push().getKey();
                         childUpdate.put("/goals/"+key,goalIn);
