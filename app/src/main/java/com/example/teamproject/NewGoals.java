@@ -155,19 +155,18 @@ public class NewGoals extends AppCompatActivity {
             temp.set(year, month, dayOfMonth);
             String key;
             int count = 0;
-            Map<String, Object> childUpdate = new HashMap<>(); //use a map for more than one time for additional goals
+            Map<String, Object> childUpdate = new HashMap<>(); //use a map for more than one time for additional goa
+            List<Goal> goals = new ArrayList<>();
             switch (frequency) {
                 case 0: // one time
-                    key = mDatabase.child("goals").push().getKey();
-                    childUpdate.put("/goals/" + key, createdGoal);
+                    goals.add(createdGoal);
                     break;
                 case 1: // weekly recurrence
                     while (today.before(temp)) {
-                        key = mDatabase.child("goals").push().getKey();
                         Goal goalIn = new Goal(createdGoal);
                         temp.add(temp.DATE, -(7 * count));
                         goalIn.setDate(temp.getTime());
-                        childUpdate.put("/goals/" + key, goalIn);
+                        goals.add(goalIn);
                         count++;
                     }
 
@@ -177,13 +176,13 @@ public class NewGoals extends AppCompatActivity {
                         Goal goalIn = new Goal(createdGoal);
                         temp.add(temp.DATE, -(count));
                         goalIn.setDate(temp.getTime());
-                        key = mDatabase.child("goals").push().getKey();
-                        childUpdate.put("/goals/" + key, goalIn);
+                        goals.add(goalIn);
                         count++;
                     }
                     break;
                 default:
             }
+            childUpdate.put("/goals/"+createdGoal.toString(),goals);
             mDatabase.updateChildren(childUpdate);
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
