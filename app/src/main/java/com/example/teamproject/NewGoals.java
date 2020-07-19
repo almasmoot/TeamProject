@@ -1,5 +1,7 @@
 package com.example.teamproject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -184,7 +186,19 @@ public class NewGoals extends AppCompatActivity {
                     break;
                 default:
             }
-            mDatabase.updateChildren(childUpdate);
+            mDatabase.updateChildren(childUpdate, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    if(error == null)
+                    {
+                        Log.i(TAG, "success");
+                    }
+                    else
+                    {
+                        Log.w(TAG,"fail",error.toException());
+                    }
+                }
+            });
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
