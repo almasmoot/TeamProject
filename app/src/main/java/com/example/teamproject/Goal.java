@@ -87,6 +87,6 @@ public class Goal {
     public String toString() {
         Calendar deadline = Calendar.getInstance();
         deadline.setTime(date);
-        return goalName + '\n' +description + '\n' + (deadline.get(Calendar.MONTH) + 1) + '/' + deadline.get(Calendar.DAY_OF_MONTH) + '/' + deadline.get(Calendar.YEAR);
+        return goalName.toUpperCase() + '\n' +description + '\n' + "Deadline: " + (deadline.get(Calendar.MONTH) + 1) + '/' + deadline.get(Calendar.DAY_OF_MONTH) + '/' + deadline.get(Calendar.YEAR);
     }
 }
