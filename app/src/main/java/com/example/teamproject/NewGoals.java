@@ -154,7 +154,7 @@ public class NewGoals extends AppCompatActivity {
             Goal createdGoal = new Goal(name, description, quantity, calendar.getTime());
             Calendar today = Calendar.getInstance();
             Calendar temp = Calendar.getInstance();
-            temp.set(year, month, dayOfMonth);
+            temp.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
             String key;
             int count = 0;
             Map<String, Object> childUpdate = new HashMap<>(); //use a map for more than one time for additional goa
