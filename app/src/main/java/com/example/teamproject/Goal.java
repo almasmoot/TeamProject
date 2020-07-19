@@ -85,6 +85,8 @@ public class Goal {
     }
     @Override
     public String toString() {
-        return goalName + '\n' +description;
+        Calendar deadline = Calendar.getInstance();
+        deadline.setTime(date);
+        return goalName + '\n' +description + '\n' + deadline.get(Calendar.MONTH) + '/' + deadline.get(Calendar.DAY_OF_MONTH) + '/' + deadline.get(Calendar.YEAR);
     }
 }

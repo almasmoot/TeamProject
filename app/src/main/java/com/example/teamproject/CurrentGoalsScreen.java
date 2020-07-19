@@ -25,6 +25,13 @@ import com.google.firebase.database.FirebaseDatabase;
 
 import java.util.ArrayList;
 
+/*
+/ CURRENT GOALS SCREEN
+/ Java class for the activity displaying the listView for the current goals
+/ in Firebase. When items are selected from the list of goals, the user
+/ is taken to a graph of the progress made since the goal was created
+*/
+
 public class CurrentGoalsScreen extends AppCompatActivity {
 
     ArrayList<String> arrayList = new ArrayList<>();
@@ -36,6 +43,8 @@ public class CurrentGoalsScreen extends AppCompatActivity {
     Context context;
 
     @Override
+
+    // Retrieves information from Firebase to display the current goals in the listView
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_goals_screen);
@@ -73,18 +82,24 @@ public class CurrentGoalsScreen extends AppCompatActivity {
 
             }
         });
-    listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+
+        // takes the user to the Progress Graph screen when the goal is clicked
+    /*listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//            TODO what happens when you click
             Intent intent = new Intent(context, ProgressGraph.class);
             TextView textview = findViewById(R.id.txt_title);
             String goalInfo = textview.getText().toString();
             intent.putExtra(EXTRA_MESSAGE, goalInfo);
             startActivity(intent);
         }
-    });
+    });*/
     }
+
+    /*
+    /OPTIONS MENU
+    /Contains the code required for the options menu in the top right for app navigation
+    */
 
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
@@ -102,8 +117,6 @@ public class CurrentGoalsScreen extends AppCompatActivity {
         }
         Toast.makeText(this, selItems, Toast.LENGTH_LONG).show();
     }
-
-
 
 
     // Navigation with the menu

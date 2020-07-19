@@ -19,7 +19,12 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 
-    // display the list
+    /*
+    / GOAL ADAPTER
+    / Class allows us to adapt the Current Goals class to the client's listView interface.
+    / We followed a tutorial by YouTube user "ID" and adapted it to work with Firebase
+    / Link: https://www.youtube.com/watch?v=sk9fRXu53Qs
+    */
 
     public class GoalAdapter extends ArrayAdapter {
 
@@ -27,6 +32,7 @@ import java.util.List;
         private List<Goal> firebaseList;
         private Context context;
 
+        // constructor
         public GoalAdapter(List<Goal> firebaseList, Context context) {
             super(context, R.layout.single_listview_item, firebaseList);
             this.firebaseList = firebaseList;
@@ -44,6 +50,10 @@ import java.util.List;
             return false;
         }
 
+        /*
+        / GOAL HOLDER
+        / Class within the Adapter that contains the information retrieved from Firebase
+        */
         private class GoalHolder {
             public Button goal;
             public CheckBox chkBox;
@@ -59,6 +69,7 @@ import java.util.List;
 
         }
 
+        // getters
         @Override
         public int getCount() {
             return 0;
@@ -79,6 +90,7 @@ import java.util.List;
             return false;
         }
 
+        // reads information from Firebase to a Goal Holder object
         public View getView(int position, View convertView, ViewGroup parent) {
             View v = convertView;
 
@@ -104,6 +116,7 @@ import java.util.List;
                 holder = (GoalHolder) v.getTag();
             }
 
+
             final Goal g = firebaseList.get(position);
             holder.goal.setText(g.toString());
             holder.goal.setOnClickListener(new View.OnClickListener() {
@@ -122,11 +135,12 @@ import java.util.List;
             return v;
         }
 
+        /*
         public void toGraph(View view) {
             Intent intent = new Intent(context, ProgressGraph.class);
             context.startActivity(intent);
         }
-
+        */
         @Override
         public int getItemViewType(int position) {
             return 0;
