@@ -153,10 +153,10 @@ public class NewGoals extends AppCompatActivity {
         else {
             Goal createdGoal = new Goal(name, description, quantity, calendar.getTime());
             Calendar today = Calendar.getInstance();
+            today.add(today.DATE,1);
             Calendar temp = Calendar.getInstance();
             temp.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH),calendar.get(Calendar.DAY_OF_MONTH));
             String key;
-            int count = 0;
             Map<String, Object> childUpdate = new HashMap<>(); //use a map for more than one time for additional goa
             switch (frequency) {
                 case 0: // one time
@@ -170,8 +170,7 @@ public class NewGoals extends AppCompatActivity {
                         goalIn.setDate(temp.getTime());
                         key = mDatabase.child("goals").push().getKey();
                         childUpdate.put("/goals/"+key,goalIn);
-                        count++;
-                        temp.add(temp.DATE, -(7 * count));
+                        temp.add(temp.DATE, -(7));
                     }
 
                     break;
@@ -182,8 +181,7 @@ public class NewGoals extends AppCompatActivity {
                         goalIn.setDate(temp.getTime());
                         key = mDatabase.child("goals").push().getKey();
                         childUpdate.put("/goals/"+key,goalIn);
-                        count++;
-                        temp.add(temp.DATE, -(count));
+                        temp.add(temp.DATE, -(1));
                     }
                     break;
                 default:
