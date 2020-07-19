@@ -76,7 +76,7 @@ public class NewGoals extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                 date.setText(day + "/" + (month + 1) + "/" + year);
-                                calendar.set(year,month+1,day);
+                                calendar.set(year,month,day);
                             }
                         }, year, month, dayOfMonth);
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
