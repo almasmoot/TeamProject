@@ -1,5 +1,7 @@
 package com.example.teamproject;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.app.DatePickerDialog;
@@ -8,6 +10,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -46,17 +49,14 @@ public class NewGoals extends AppCompatActivity {
 
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.menu, menu);
-        return true;
-    }
-
-    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_goals);
 
+        /*
+        this section sets up the button in the middle of the page to pull up a calendar when it is
+        clicked. from there you can select a date and it will save that to be used for the goal
+         */
         selectDate = findViewById(R.id.btnDate);
         date = findViewById(R.id.tvSelectedDate);
         calendar = Calendar.getInstance();
@@ -85,6 +85,11 @@ public class NewGoals extends AppCompatActivity {
         });
     }
 
+    /*
+    This method handles the radio buttons and changes a global variable to indicate the frequency of
+    the goal.
+     */
+
     public void onRadioButtonClicked(View view) {
         // Is the button now checked?
         boolean checked = ((RadioButton) view).isChecked();
@@ -106,6 +111,11 @@ public class NewGoals extends AppCompatActivity {
         }
     }
 
+    /*
+    This method creates a new goal when the create button is pressed based off of the values in the
+    text fields. if any of the required fields are empty, it will notify the user via a toast about
+    which fields need to be filled out. after creating the goal, it then pushes it up to firebase.
+     */
     public void createGoal(View view)
     {
         DatabaseReference mDatabase;
@@ -147,19 +157,19 @@ public class NewGoals extends AppCompatActivity {
             temp.set(year, month, dayOfMonth);
             String key;
             int count = 0;
-            Map<String, Object> childUpdate = new HashMap<>();
+            Map<String, Object> childUpdate = new HashMap<>(); //use a map for more than one time for additional goa
             switch (frequency) {
                 case 0: // one time
                     key = mDatabase.child("goals").push().getKey();
-                    childUpdate.put("/goals/" + key, createdGoal);
+                    childUpdate.put("/goals/"+key,createdGoal);
                     break;
                 case 1: // weekly recurrence
                     while (today.before(temp)) {
-                        key = mDatabase.child("goals").push().getKey();
                         Goal goalIn = new Goal(createdGoal);
                         temp.add(temp.DATE, -(7 * count));
                         goalIn.setDate(temp.getTime());
-                        childUpdate.put("/goals/" + key, goalIn);
+                        key = mDatabase.child("goals").push().getKey();
+                        childUpdate.put("/goals/"+key,goalIn);
                         count++;
                     }
 
@@ -170,15 +180,60 @@ public class NewGoals extends AppCompatActivity {
                         temp.add(temp.DATE, -(count));
                         goalIn.setDate(temp.getTime());
                         key = mDatabase.child("goals").push().getKey();
-                        childUpdate.put("/goals/" + key, goalIn);
+                        childUpdate.put("/goals/"+key,goalIn);
                         count++;
                     }
                     break;
                 default:
             }
-            mDatabase.updateChildren(childUpdate);
+            mDatabase.updateChildren(childUpdate, new DatabaseReference.CompletionListener() {
+                @Override
+                public void onComplete(@Nullable DatabaseError error, @NonNull DatabaseReference ref) {
+                    if(error == null)
+                    {
+                        Log.i(TAG, "success");
+                    }
+                    else
+                    {
+                        Log.w(TAG,"fail",error.toException());
+                    }
+                }
+            });
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    // Navigation with the menu
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.newGoal:
+                Intent intent1 = new Intent(this, NewGoals.class);
+                this.startActivity(intent1);
+                return true;
+            case R.id.existingGoals:
+                Intent intent2 = new Intent(this, CurrentGoalsScreen.class);
+                this.startActivity(intent2);
+                return true;
+            case R.id.progress:
+                Intent intent3 = new Intent(this, MainActivity.class);
+                this.startActivity(intent3);
+                return true;
+/*            case R.id.friendProgress:
+                Intent intent4 = new Intent(this, SecondFragment.class);
+                this.startActivity(intent4);
+                return true;
+*/            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }

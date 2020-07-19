@@ -12,6 +12,6 @@
         app:showAsAction="never" />
     <item
         android:id="@+id/progress"
-        android:title="See Your Progress"
+        android:title="Home Screen"
         app:showAsAction="never" />
 </menu>

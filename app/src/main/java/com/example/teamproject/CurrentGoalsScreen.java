@@ -4,11 +4,18 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -25,13 +32,15 @@ public class CurrentGoalsScreen extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     DatabaseReference databaseReference;
     ListView listView;
-    public static final String EXTRA_MESSAGE = "";
+    public static final String EXTRA_MESSAGE = "com.example.teamproject.goalInfo";
+    Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_current_goals_screen);
         selectedItems=new ArrayList<String>();
+        context = this;
         databaseReference=FirebaseDatabase.getInstance().getReference("goals");
         listView=(ListView) findViewById(R.id.listview);
         arrayAdapter = new ArrayAdapter<String>(CurrentGoalsScreen.this,R.layout.checkable_list_layout,R.id.txt_title,arrayList);
@@ -68,8 +77,59 @@ public class CurrentGoalsScreen extends AppCompatActivity {
         @Override
         public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 //            TODO what happens when you click
+            Intent intent = new Intent(context, ProgressGraph.class);
+            TextView textview = findViewById(R.id.txt_title);
+            String goalInfo = textview.getText().toString();
+            intent.putExtra(EXTRA_MESSAGE, goalInfo);
+            startActivity(intent);
         }
     });
+    }
+
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu, menu);
+        return true;
+    }
+
+    public void showSelectedItems(View view){
+        String selItems="";
+        for(String item:selectedItems){
+            if(selItems=="")
+                selItems=item;
+            else
+                selItems+="/"+item;
+        }
+        Toast.makeText(this, selItems, Toast.LENGTH_LONG).show();
+    }
+
+
+
+
+    // Navigation with the menu
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case R.id.newGoal:
+                Intent intent1 = new Intent(this, NewGoals.class);
+                this.startActivity(intent1);
+                return true;
+            case R.id.existingGoals:
+                Intent intent2 = new Intent(this, CurrentGoalsScreen.class);
+                this.startActivity(intent2);
+                return true;
+            case R.id.progress:
+                Intent intent3 = new Intent(this, MainActivity.class);
+                this.startActivity(intent3);
+                return true;
+/*            case R.id.friendProgress:
+                Intent intent4 = new Intent(this, SecondFragment.class);
+                this.startActivity(intent4);
+                return true;
+*/            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 
 
