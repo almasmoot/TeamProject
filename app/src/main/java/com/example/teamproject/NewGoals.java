@@ -44,7 +44,7 @@ public class NewGoals extends AppCompatActivity {
     public static final String EXTRA_MESSAGE = "com.example.teamproject.MESSAGE";
     public static final String TAG = "NewGoals";
     private int frequency = 2; //0 for once, 1 for weekly, 2 for Daily
-    
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
