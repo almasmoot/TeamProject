@@ -76,7 +76,7 @@ public class NewGoals extends AppCompatActivity {
                             @Override
                             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                                 date.setText(day + "/" + (month + 1) + "/" + year);
-                                calendar.set(year,month+1,day);
+                                calendar.set(year,month,day);
                             }
                         }, year, month, dayOfMonth);
                 datePickerDialog.getDatePicker().setMinDate(System.currentTimeMillis());
@@ -166,22 +166,24 @@ public class NewGoals extends AppCompatActivity {
                 case 1: // weekly recurrence
                     while (today.before(temp)) {
                         Goal goalIn = new Goal(createdGoal);
-                        temp.add(temp.DATE, -(7 * count));
+
                         goalIn.setDate(temp.getTime());
                         key = mDatabase.child("goals").push().getKey();
                         childUpdate.put("/goals/"+key,goalIn);
                         count++;
+                        temp.add(temp.DATE, -(7 * count));
                     }
 
                     break;
                 case 2: // daily recurrence
                     while (today.before(temp)) {
                         Goal goalIn = new Goal(createdGoal);
-                        temp.add(temp.DATE, -(count));
+
                         goalIn.setDate(temp.getTime());
                         key = mDatabase.child("goals").push().getKey();
                         childUpdate.put("/goals/"+key,goalIn);
                         count++;
+                        temp.add(temp.DATE, -(count));
                     }
                     break;
                 default:

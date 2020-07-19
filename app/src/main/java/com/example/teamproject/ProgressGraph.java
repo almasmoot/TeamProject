@@ -26,6 +26,8 @@ import java.util.ArrayList;
 
 //This graph does not work, it was fundamentally flawed as the database model was not set up for it.
 //We decided to cut scope
+
+
 public class ProgressGraph extends AppCompatActivity {
 
     //global variables
