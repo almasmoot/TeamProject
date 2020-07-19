@@ -13,10 +13,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
@@ -33,24 +35,41 @@ public class MainActivity extends AppCompatActivity {
     ArrayAdapter<String> arrayAdapter;
     DatabaseReference databaseReference;
     ListView listView;
-    Module module;
+    CalendarView calendarView;
+    static int year;
+    static int month;
+    static int dayOfMonth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        calendarView = findViewById(R.id.calendarView);
         selectedItems=new ArrayList<String>();
         databaseReference=FirebaseDatabase.getInstance().getReference("goals");
         listView=(ListView) findViewById(R.id.goalsView);
         listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE);
+        String date = getIntent().getStringExtra("date");
+
         arrayAdapter = new ArrayAdapter<String>(MainActivity.this,R.layout.checkable_list_layout,R.id.txt_title,arrayList);
         listView.setAdapter(arrayAdapter);
         databaseReference.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                String value=snapshot.getValue(Goal.class).toString();
-                arrayList.add(value);
-                arrayAdapter.notifyDataSetChanged();
+                Calendar calendar1;
+                Calendar calendar2;
+                calendar1 = Calendar.getInstance();
+                calendar1.setTimeInMillis(calendarView.getDate());
+                Goal value=snapshot.getValue(Goal.class);
+                calendar2 = Calendar.getInstance();
+                calendar2.setTime(value.getDate());
+                if (calendar1.get(Calendar.YEAR) == calendar2.get(Calendar.YEAR) && calendar1.get(Calendar.MONTH) == calendar2.get(Calendar.MONTH) &&
+                        calendar1.get(Calendar.DAY_OF_MONTH) == calendar2.get(Calendar.DAY_OF_MONTH)) {
+                    arrayList.add(value.toString());
+                    arrayAdapter.notifyDataSetChanged();
+                }
+
+
             }
 
             @Override
@@ -75,18 +94,55 @@ public class MainActivity extends AppCompatActivity {
         });
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                deleteGoal();
-                // selected item
-//                String selectedItem = ((TextView) view).getText().toString();
-//                if(selectedItems.contains(selectedItem)) {
-
-//                    selectedItems.remove(selectedItem); //remove deselected item from the list of selected items
-//                }
-//                else
-//                    selectedItems.add(selectedItem); //add selected item to the list of selected items
-
+                goalAchieved();
             }
 
+        });
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                MainActivity.month = month;
+                MainActivity.year = year;
+                MainActivity.dayOfMonth = dayOfMonth;
+                arrayList.clear();
+                databaseReference.addChildEventListener(new ChildEventListener() {
+                    @Override
+                    public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+                        Calendar calendar2;
+                        Goal value=snapshot.getValue(Goal.class);
+                        calendar2 = Calendar.getInstance();
+                        calendar2.setTime(value.getDate());
+                        if (MainActivity.year == calendar2.get(Calendar.YEAR) && MainActivity.month == calendar2.get(Calendar.MONTH) &&
+                                MainActivity.dayOfMonth == calendar2.get(Calendar.DAY_OF_MONTH)) {
+                            arrayList.add(value.toString());
+                            arrayAdapter.notifyDataSetChanged();
+                        }
+
+
+                    }
+
+                    @Override
+                    public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onChildRemoved(@NonNull DataSnapshot snapshot) {
+
+                    }
+
+                    @Override
+                    public void onChildMoved(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
+
+                    }
+                });
+            }
         });
     }
 
@@ -102,23 +158,9 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private void deleteGoal() {
-//        final DatabaseReference ref = FirebaseDatabase.getInstance().getReference();
-//        ref.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(DataSnapshot snapshot) {
-//                for (DataSnapshot objSnapshot: snapshot.getChildren()) {
-//                    Object obj = snapshot.getKey();
-//                    ref.child(String.valueOf(obj)).removeValue();
-//
-//                }
-//            }
-//            @Override
-//            public void onCancelled(DatabaseError firebaseError) {
-//                Log.e("Read failed", firebaseError.getMessage());
-//            }
-//        });
+    private void goalAchieved() {
         Toast.makeText(this, "Goal accomplished!!",Toast.LENGTH_LONG).show();
+
     }
 
 

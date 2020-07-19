@@ -89,4 +89,9 @@ public class Goal {
         deadline.setTime(date);
         return goalName.toUpperCase() + '\n' +description + '\n' + "Deadline: " + (deadline.get(Calendar.MONTH) + 1) + '/' + deadline.get(Calendar.DAY_OF_MONTH) + '/' + deadline.get(Calendar.YEAR);
     }
+
+    public boolean isEqual(Goal goal) {
+        return ((this.description == goal.getDescription()) && (this.quantity == goal.quantity)
+                && (this.goalName == goal.getGoalName()) && ((this.date.compareTo(goal.getDate()) == 0)));
+    }
 }
